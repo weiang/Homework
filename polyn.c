@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <caca.h>
 #define OK	1
 #define ERROR	0
 
@@ -344,8 +343,8 @@ int main(void)
 		printf("Please enter your choice:\n");
 		scanf("%d", &choice);
 	}
-	printf("Error choice has receieved!\n");
-	printf("Quit abnormally!\n");
+//	printf("Error choice has receieved!\n");
+//	printf("Quit abnormally!\n");
 	printf("*********************************************\n");
 	printf("Thank you for your using!\n");
 	printf("*********************************************\n");
