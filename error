@@ -1,0 +1,2 @@
+*** glibc detected *** ./a.out: malloc(): memory corruption (fast): 0x00000000012e5220 ***
+
