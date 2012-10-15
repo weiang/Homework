@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N	100
+#define N		2	
 #define PRICE	5
 /* 
  * Date Structures 
@@ -306,10 +306,12 @@ void depart(event_node *pnode)
 	if (locate_and_del_list(&stop_list, pnode -> car_num, &tmpnode) == 1) {
 		total_time = pnode -> occur_time - tmpnode.arrive_time;
 		money = total_time * PRICE;
+		printf("Car %d\n", pnode -> car_num);
 		printf("The %dth car to leave:\n", ++ num);
 		printf("Stop car into stopping area!\n");
 		printf("Total time stopped in stopping area: %d\n", total_time);
 		printf("Total money needed: %f\n", money);
+		printf("\n");
 		total_money += money;
 		if (!empty_queue(&wait_queue)) {
 			if ((ptmp = (queue_node *)malloc(sizeof(queue_node))) == NULL)
@@ -324,28 +326,43 @@ void depart(event_node *pnode)
 		printf("The %dth car to leave:\n", ++ num);
 		printf("Stop car outside the stopping area!\n");
 		printf("No money needed!\n");
+		printf("\n");
 	}
 }
 
 void init_stop_area(void)
 {
 	FILE *in;
-	char	a;
+	int	a;
 	event_node	*pnode;
 
 	init_event_list(&el);
 	if ((in = fopen("input", "r")) == NULL)
 		error("Open file error");
-
-	while((a = fgetc(in)) != 'E') {
+/*	while(!feof(in)) {
 		if ((pnode = (event_node *)malloc(sizeof(event_node))) == NULL)
 			error("Event list node malloc error");
+		fscanf(in, "%c%d%d", &a, &(pnode -> car_num), &(pnode -> occur_time));
+		if (a != '\0')
+			printf("%c %d %d\n", a, pnode -> car_num, pnode -> occur_time);
 		if (a = 'A')
 			pnode -> event_type = 0;
-		else 
+		else if (a = 'D')
 			pnode -> event_type = 1;
-		fscanf(in, "%d%d", &(pnode -> car_num), &(pnode -> occur_time));
+		else 
+			break;
 		pnode -> next = NULL;
+		order_insert(&el, pnode);
+	}
+*/
+	while (1) {
+		if ((pnode = (event_node *)malloc(sizeof(event_node))) == NULL)
+			error("Event node malloc error");
+		scanf("%d%d%d", &(pnode -> event_type), &(pnode -> car_num), &(pnode -> occur_time));
+		pnode -> next = NULL;
+		printf("%d %d %d\n", pnode -> event_type , pnode -> car_num, pnode -> occur_time);
+		if (pnode -> event_type == 2)
+			break;
 		order_insert(&el, pnode);
 	}
 	init_queue(&wait_queue);
@@ -356,9 +373,9 @@ int main(void)
 {
 	init_stop_area();
 
-	printf("123\n");
 	while (el.length > 0) {
 		del_first_node(&el, &en);
+		fprintf(stderr, "%d %d %d\n", en.event_type, en.car_num, en.occur_time);
 		if (en.event_type == 0)
 			arrive(&en);
 		else 
