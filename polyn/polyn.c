@@ -87,6 +87,10 @@ void print_polyn(polyn_ptr pployn)
 	
 	ptmp = pployn -> next;
 
+	if (ptmp == NULL) {
+			printf("0\n");
+			return;
+	}
 	while (ptmp && ptmp -> next != NULL) {
 		printf("%0.1f * x ^ %d + ", ptmp -> coef, ptmp -> expn);
 		ptmp = ptmp -> next;
@@ -102,6 +106,8 @@ void add_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b)
 	int	flag;
 
 	polyn_c = polyn_a;
+	polyn_tmp1 = polyn_a;
+	polyn_tmp2 = polyn_b;
 	pa = polyn_a -> next;
 	pb = polyn_b -> next;
 
@@ -110,31 +116,33 @@ void add_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b)
 		if (flag > 0) {
 			polyn_c -> next = pb;
 			polyn_c = pb;
+			polyn_tmp2 = pb;
 			pb = pb -> next;
 		}
 		else if (flag < 0) {
 			polyn_c -> next = pa;
 			polyn_c = pa;
+			polyn_tmp1 = pa;
 			pa = pa -> next;
 		}
 		else {
 			sum = pa -> coef + pb -> coef;
-			if (sum == 0.0) {
-				polyn_tmp1 = pa;
-				polyn_tmp2 = pb;
-				pa = pa -> next;
-				pb = pb -> next;
-				free(polyn_tmp1);
-				free(polyn_tmp2);
+			if ((sum - 0.0) < 0.00001) {
+				polyn_tmp1 -> next = pa -> next;
+				polyn_tmp2 -> next = pb -> next;
+				free(pa);
+				free(pb);
+				pa = polyn_tmp1 -> next;
+				pb = polyn_tmp2 -> next;
 			}
 			else {
 				polyn_c -> next = pa;
 				pa -> coef = sum;
 				polyn_c = pa;
 				pa = pa -> next;
-				polyn_tmp2 = pb;
-				pb = pb -> next;
-				free(polyn_tmp2);
+				polyn_tmp2 -> next = pb -> next;
+				free(pb);
+				pb = polyn_tmp2 -> next;
 			}
 		}
 	}
@@ -204,9 +212,9 @@ void mul_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b, polyn_ptr polyn_mul)
 
 	while (pb) {
 		pc = &polyn_c;
-		if (pb -> coef != 0.0) {
+		if ((pb -> coef - 0.0) > 0.00001 || (pb -> coef - 0.0) < -0.00001) {
 			for (pa = polyn_a -> next; pa != NULL; pa = pa -> next) {
-				if (pa -> coef == 0)
+				if ((pa -> coef - 0.0) < 0.00001)
 					continue;
 				pc -> next = (polyn *)malloc(sizeof(polyn));
 				if (pc -> next == NULL)
@@ -216,6 +224,7 @@ void mul_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b, polyn_ptr polyn_mul)
 				pc -> expn = pa -> expn + pb -> expn;
 				pc -> next = NULL;
 			}
+			print_polyn(&polyn_c);
 			add_polyn(polyn_mul, &polyn_c);
 		}
 		pb = pb -> next;
@@ -319,8 +328,8 @@ void mul(void)
 	print_polyn(&pb);
 
 	mul_polyn(&pa, &pb, &pmul);
-	printf("F(x1) * F(x2) is \n");
-	print_polyn(pmul.next);
+	printf("F(x1) * F(x2) = ");
+	print_polyn(&pmul);
 }
 
 int main(void)

@@ -3,7 +3,7 @@
 
 static	num = 0;
 void hannoi(int n, int a, int b, int c)
-{
+{	
 	if (n == 1)
 		printf("%4d: move %d from %c to %c\n", ++num, n, a, c);
 
