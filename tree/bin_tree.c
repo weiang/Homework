@@ -21,6 +21,9 @@ typedef struct node {
 	struct node		*lchild, *rchild;
 } bin_node;
 
+/*
+ * 创建二叉树
+ */
 int creat_bin_tree(bin_node **root)
 {
 	char	c;
@@ -38,10 +41,16 @@ int creat_bin_tree(bin_node **root)
 	return EXIT_SUCCESS;
 }
 
-int pre_order_trverse(bin_node *root, int visit(bin_node *))
+/*
+ *  先序遍历
+ */
+// 递归算法
+int recursion_pre_order_trverse(bin_node *root, int visit(bin_node *))
 {
-	if (root == NULL)
+	if (root == NULL) {
+		printf("%c\t", '0');
 		return EXIT_SUCCESS;
+	}
 
 	visit(root);
 	pre_order_trverse(root -> lchild, visit);
@@ -49,6 +58,29 @@ int pre_order_trverse(bin_node *root, int visit(bin_node *))
 	return EXIT_SUCCESS;
 }
 
+// 非递归算法
+int pre_order_trverse(bin_node *root, int visit(bin_node *))
+{
+	int	top = 0;
+	bin_node	*stack[MAX];
+	bin_node	*ptmp;
+
+	ptmp = root;
+
+	if (ptmp == NULL)
+		return EXIT_FAILURE;
+
+	else {
+		visit(ptmp);
+		while (top > 0) {
+			if (ptmp -> rchild != NULL) {
+			stack[top ++] = ptmp -> rchild;
+		else {
+			ptmp = ptmp -> lchild;
+
+/* 
+ * 中序遍历
+ */
 int inter_order_trverse(bin_node *root, int visit(bin_node *))
 {
 	if (root == NULL)
@@ -61,6 +93,9 @@ int inter_order_trverse(bin_node *root, int visit(bin_node *))
 	return EXIT_SUCCESS;
 }
 
+/*
+ * 后序遍历
+ */
 int post_order_trverse(bin_node *root, int visit(bin_node *))
 {
 	if (root == NULL)
@@ -73,6 +108,9 @@ int post_order_trverse(bin_node *root, int visit(bin_node *))
 	return EXIT_SUCCESS;
 }
 
+/*
+ * 层序遍历
+ */
 int	lay_order_trverse(bin_node *root, int visit(bin_node *))
 {
 	int	rear, front;
@@ -96,6 +134,9 @@ int	lay_order_trverse(bin_node *root, int visit(bin_node *))
 	return EXIT_SUCCESS;
 }
 
+/* 
+ * 求树上任一节点到树根的距离
+ */
 int distance(bin_node *root, char term)
 {
 		int	tmp;
@@ -118,6 +159,9 @@ int print(bin_node *pnode)
 	return EXIT_SUCCESS;
 }
 
+/*
+ * 求树的深度
+ */
 int	height(bin_node *root)
 {
 	int	tmp1, tmp2;
@@ -153,6 +197,7 @@ void bin_tree_copy(bin_node *t_from, bin_node **pt_to)
 	bin_node	*p_from, *p_to;
 
 	// Initilization
+	(*pt_to) = (bin_node *)malloc(sizeof(bin_node));
 	(*pt_to) -> data = t_from -> data;
 	top = 0;
 	status[top] = 0;
@@ -196,6 +241,60 @@ void bin_tree_copy(bin_node *t_from, bin_node **pt_to)
 		}
 		}	
 	}
+
+/* 
+ * 调换树的左右子树
+ */
+// 递归算法
+void recursion_exchange_bin_tree_node(bin_node *root)
+{
+	bin_node	*ptmp;
+
+	if (root == NULL)
+		return;
+	else {
+		ptmp = root -> lchild;
+		root -> lchild = root -> rchild;
+		root -> rchild = ptmp;
+		recursion_exchange_bin_tree_node(root -> lchild);
+		recursion_exchange_bin_tree_node(root -> rchild);
+	}
+}
+
+//  非递归算法
+void exchange_bin_tree_node(bin_node *root)
+{
+	bin_node	*stack[MAX];
+	bin_node	*ptmp, *p;
+	int	top = 0;
+	stack[top ++] = root;
+
+	while (top > 0) {
+		ptmp = stack[top - 1];
+		top --;
+		if (ptmp -> lchild && ptmp -> rchild) {
+			p = ptmp -> rchild;
+			ptmp -> rchild = ptmp -> lchild;
+			ptmp -> lchild = p;
+			stack[top ++] = ptmp -> rchild;
+			stack[top ++] = ptmp -> lchild;
+		}
+		else if (ptmp -> lchild == NULL && ptmp -> rchild == NULL) {
+		}
+		else if (ptmp -> lchild) {
+			stack[top ++] = ptmp -> lchild;
+			ptmp -> rchild = ptmp -> lchild;
+			ptmp -> lchild = NULL;
+		}
+		else {
+			stack[top ++] = ptmp -> rchild;
+			ptmp -> lchild = ptmp -> rchild;
+			ptmp -> rchild = NULL;
+		}
+	}
+}
+
+		
 		
 /*	Test of order trverse functions */
 
@@ -207,11 +306,21 @@ int main(void)
 	bin_node	*copynode;
 
 	creat_bin_tree(&root);
-	lay_order_trverse(root, print);
+	pre_order_trverse(root, print);
 	printf("\n");
-	bin_tree_copy(root, &copynode);
-	lay_order_trverse(copynode, print);
+//	bin_tree_copy(root, &copynode);
+//	pre_order_trverse(copynode, print);
+//	printf("\n");
+	exchange_bin_tree_node(root);
+//	exchange_bin_tree_node(copynode);
+	pre_order_trverse(root, print);
 	printf("\n");
+	exchange_bin_tree_node(root);
+	recursion_exchange_bin_tree_node(root);
+	pre_order_trverse(root, print);
+	printf("\n");
+//	pre_order_trverse(copynode, print);
+//	printf("\n");
 // test for distace 
 /*	for (i = 0, test = 'A'; i < 10; test ++, i ++){
 		printf("%c:\t", test);
@@ -222,10 +331,16 @@ int main(void)
 // test for trverse
 /*	printf("Pre order trverse:\t");
 	pre_order_trverse(root, print);
+	printf("\n");
+	pre_order_trverse(copynode, print);
 	printf("\nInter order trverse:\t");
 	inter_order_trverse(root, print);
-	printf("\nPost order trverse:\t");
-	post_order_trverse(root, print);
 	printf("\n");
-*/	return EXIT_SUCCESS;
+	inter_order_trverse(copynode, print);
+	printf("\nPost order trverse:\t");
+	post_order_trverse(copynode, print);
+	printf("\n");
+	post_order_trverse(copynode, print);
+*/	printf("\n");
+	return EXIT_SUCCESS;
 }
