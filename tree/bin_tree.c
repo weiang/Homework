@@ -35,6 +35,8 @@ int creat_bin_tree(bin_node **root)
 		if (!(*root = (bin_node *)malloc(sizeof **root)))
 				exit(EXIT_FAILURE);
 		(*root) -> data = c;
+		(*root) -> lchild = NULL;
+		(*root) -> rchild = NULL;
 		creat_bin_tree(&((*root) -> lchild));
 		creat_bin_tree(&((*root) -> rchild));
 	}
@@ -48,13 +50,13 @@ int creat_bin_tree(bin_node **root)
 int recursion_pre_order_trverse(bin_node *root, int visit(bin_node *))
 {
 	if (root == NULL) {
-		printf("%c\t", '0');
+//		printf("%c\t", '0');
 		return EXIT_SUCCESS;
 	}
 
 	visit(root);
-	pre_order_trverse(root -> lchild, visit);
-	pre_order_trverse(root -> rchild, visit);
+	recursion_pre_order_trverse(root -> lchild, visit);
+	recursion_pre_order_trverse(root -> rchild, visit);
 	return EXIT_SUCCESS;
 }
 
@@ -71,12 +73,20 @@ int pre_order_trverse(bin_node *root, int visit(bin_node *))
 		return EXIT_FAILURE;
 
 	else {
-		visit(ptmp);
-		while (top > 0) {
-			if (ptmp -> rchild != NULL) {
-			stack[top ++] = ptmp -> rchild;
-		else {
-			ptmp = ptmp -> lchild;
+		while (top >= 0) {
+			while (ptmp != NULL) {
+				visit(ptmp);
+				if (ptmp -> rchild != NULL) 
+					stack[top ++] = ptmp -> rchild;
+				ptmp = ptmp -> lchild;
+			}
+		if (top >= 0) {
+				top --;
+				ptmp = stack[top];
+			}
+		}
+	}
+}
 
 /* 
  * 中序遍历
@@ -311,14 +321,15 @@ int main(void)
 //	bin_tree_copy(root, &copynode);
 //	pre_order_trverse(copynode, print);
 //	printf("\n");
-	exchange_bin_tree_node(root);
+//	exchange_bin_tree_node(root);
 //	exchange_bin_tree_node(copynode);
-	pre_order_trverse(root, print);
-	printf("\n");
-	exchange_bin_tree_node(root);
+//	recursion_pre_order_trverse(root, print);
+//	printf("\n");
+/*	exchange_bin_tree_node(root);
 	recursion_exchange_bin_tree_node(root);
 	pre_order_trverse(root, print);
 	printf("\n");
+*/
 //	pre_order_trverse(copynode, print);
 //	printf("\n");
 // test for distace 

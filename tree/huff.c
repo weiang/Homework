@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define	MAX	100
 
 typedef char	element_type;
 
@@ -42,9 +43,21 @@ static void select_node(huff_tree_ptr ptree, int n, int *s1, int *s2)
 	return;
 }
 
+/*void recursion_pre_order_trverse(huff_tree_ptr root)
+{
+	if (root -> rchild == 0 && root -> lchild == 0)
+		return;
+	else {
+		printf("%d\t", root -> weight);
+		recursion_pre_order(
+*/
+
 void huffman_codeing(huff_tree_ptr *ptree, huffman_code *pcode, int *w, int n, element_type *et)
 {	// w存放n个字符的权值，构造huffman树，并求出n个字符的huffman编码
-	int	m;
+	
+	huff_tree_ptr	ptmp;
+	huff_tree_ptr	stack[MAX];
+	int				top = 0;int	m;
 	huff_tree_ptr	p;
 	char	*cd;
 	int	i, c, f, start;
@@ -74,6 +87,20 @@ void huffman_codeing(huff_tree_ptr *ptree, huffman_code *pcode, int *w, int n, e
 		(*ptree)[i].lchild = s1;
 		(*ptree)[i].rchild = s2;
 		(*ptree)[i].weight = (*ptree)[s1].weight + (*ptree)[s2].weight;
+	}
+// 检查huffman树的生成状态
+	
+	ptmp = (*ptree)[m];
+	
+	while (top >= 0) {
+		while (ptmp -> rchild != 0 || ptmp -> lchild != 0) {
+			printf("%d\t", ptmp -> weight);
+			if (ptmp -> rchild)
+				stack[top ++] = (*ptree)[ptmp -> rchild];
+			ptmp = (*ptree)[ptmp -> lchild];
+		}
+		if (top >= 0)
+			ptmp = stack[-- top];
 	}
 
 /* 
