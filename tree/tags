@@ -1,0 +1,107 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+AD	bintree.c	22;"	d	file:
+ASIIC	huff.h	4;"	d
+ASIIC	zip.c	14;"	d	file:
+BUFSIZE	huff.h	5;"	d
+MAX	a.c	12;"	d	file:
+MAX	bintree.c	19;"	d	file:
+MAX	bintree.h	4;"	d
+MEDIA	bintree.c	21;"	d	file:
+MEDIA	bintree.h	6;"	d
+TABLE	bintree.c	20;"	d	file:
+TABLE	bintree.h	5;"	d
+_BIN_TREE_	bintree.h	2;"	d
+_HUFF_H_	huff.h	2;"	d
+bin_node	bintree.c	/^} bin_node;$/;"	t	typeref:struct:node	file:
+bin_node	bintree.h	/^} bin_node;$/;"	t	typeref:struct:node
+bin_tree_copy	bintree.c	/^void bin_tree_copy(bin_node *t_from, bin_node **pt_to)$/;"	f
+bit_queue	zip.c	/^char	bit_queue[BUFSIZE];	\/\/ 编码缓存队列$/;"	v
+creat_bin_tree	bintree.c	/^int creat_bin_tree(bin_node **root)$/;"	f
+creat_huff_tree	huff.c	/^huff_node *creat_huff_tree(int occurence[], int num, element_type *word)$/;"	f
+data	a.c	/^	element_type	data;$/;"	m	struct:__anon1	file:
+data	bintree.c	/^	element_type	data;$/;"	m	struct:node	file:
+data	bintree.h	/^	element_type data;$/;"	m	struct:node
+data	huff.h	/^	element_type	data;$/;"	m	struct:node
+data	th_tree.c	/^	element_type	data;$/;"	m	struct:node	file:
+distance	bintree.c	/^int distance(bin_node *root, char term)$/;"	f
+element_type	a.c	/^typedef char	element_type;$/;"	t	file:
+element_type	bintree.c	/^typedef char	element_type;$/;"	t	file:
+element_type	bintree.h	/^typedef char	element_type;$/;"	t
+element_type	huff.h	/^typedef char	element_type;$/;"	t
+element_type	th_tree.c	/^typedef char	element_type;$/;"	t	file:
+enqueue	zip.c	/^static void enqueue(char *encode, int n, FILE *w)$/;"	f	file:
+exchange_bin_tree_node	bintree.c	/^void exchange_bin_tree_node(bin_node *root)$/;"	f
+find_flag	bintree.c	/^static int	find_flag = 0;$/;"	v	file:
+find_near_ancestor	bintree.c	/^void find_near_ancestor(bin_node *root, element_type p, element_type q)$/;"	f
+find_path	bintree.c	/^void find_path(bin_node *root, element_type p, bin_node *path[], int index)$/;"	f
+get_occurence	zip.c	/^static void get_occurence(int *occur, element_type *word, int *len, const char*filename)$/;"	f	file:
+height	bintree.c	/^int	height(bin_node *root)$/;"	f
+huff_decoding	huff.c	/^void huff_decoding(huff_node *root, char *article, char *aim)$/;"	f
+huff_encoding	huff.c	/^char **huff_encoding(huff_node *root, int num)$/;"	f
+huff_node	a.c	/^} huff_node, *huff_tree_ptr;$/;"	t	typeref:struct:__anon1	file:
+huff_node	huff.h	/^} huff_node;$/;"	t	typeref:struct:node
+huff_tree_ptr	a.c	/^} huff_node, *huff_tree_ptr;$/;"	t	typeref:struct:__anon1	file:
+huffman_code	a.c	/^typedef char ** huffman_code;$/;"	t	file:
+huffman_codeing	a.c	/^void huffman_codeing(huff_tree_ptr *ptree, huffman_code *pcode, int *w, int n, element_type *et)$/;"	f
+in_order_traverse	th_tree.c	/^void in_order_traverse(th_node *root)$/;"	f
+in_th_traverse	th_tree.c	/^void in_th_traverse(th_node *head)$/;"	f
+inter_order_trverse	bintree.c	/^int inter_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+lay_order_trverse	bintree.c	/^int	lay_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+lc	huff.h	/^	int	parent, lc, rc;$/;"	m	struct:node
+lc	th_tree.c	/^	struct node	*lc, *rc;$/;"	m	struct:node	typeref:struct:node::node	file:
+lchild	a.c	/^	unsigned int	parent, lchild, rchild;$/;"	m	struct:__anon1	file:
+lchild	bintree.c	/^	struct node		*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::node	file:
+lchild	bintree.h	/^	struct node	*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::node
+leaf	bintree.c	/^int	 leaf(bin_node	*root)$/;"	f
+lf	th_tree.c	/^	int	lf, rf;$/;"	m	struct:node	file:
+limit	zip.c	/^int		limit = sizeof(char) * BUFSIZE;	\/\/ 编码缓存队列的最后一位的后一位$/;"	v
+main	a.c	/^int main(void)$/;"	f
+main	test.c	/^int main()$/;"	f
+main	th_tree.c	/^int main(void)$/;"	f
+main	zip.c	/^int	main(int argc, char *argv[])$/;"	f
+node	bintree.c	/^typedef struct node {$/;"	s	file:
+node	bintree.h	/^typedef struct node {$/;"	s
+node	huff.h	/^typedef struct node {$/;"	s
+node	th_tree.c	/^typedef struct node {$/;"	s	file:
+parent	a.c	/^	unsigned int	parent, lchild, rchild;$/;"	m	struct:__anon1	file:
+parent	huff.h	/^	int	parent, lc, rc;$/;"	m	struct:node
+post_order_trverse	bintree.c	/^int	post_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+pre	th_tree.c	/^th_node	*pre;$/;"	v
+pre_get_value	bintree.c	/^void pre_get_value(bin_node *root, int k, element_type *val)$/;"	f
+pre_order_trverse	bintree.c	/^int pre_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+pre_traverse	th_tree.c	/^void pre_traverse(th_node *root) $/;"	f
+print	bintree.c	/^int print(bin_node *pnode)$/;"	f
+random_creat_bin_tree	bintree.c	/^int	random_creat_bin_tree(bin_node **root, int node)$/;"	f
+rc	huff.h	/^	int	parent, lc, rc;$/;"	m	struct:node
+rc	th_tree.c	/^	struct node	*lc, *rc;$/;"	m	struct:node	typeref:struct:node::	file:
+rchild	a.c	/^	unsigned int	parent, lchild, rchild;$/;"	m	struct:__anon1	file:
+rchild	bintree.c	/^	struct node		*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::	file:
+rchild	bintree.h	/^	struct node	*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::
+rear	zip.c	/^int		rear;	\/\/ rear指向编码缓存队列的尾部$/;"	v
+recursion_bin_tree_copy	bintree.c	/^void recursion_bin_tree_copy(bin_node *t_from, bin_node **pt_to)$/;"	f
+recursion_creat_bin_tree	bintree.c	/^int recursion_creat_bin_tree(bin_node **root, int node)$/;"	f
+recursion_del_subtree	bintree.c	/^void recursion_del_subtree(bin_node	*root, element_type	val)$/;"	f
+recursion_exchange_bin_tree_node	bintree.c	/^void recursion_exchange_bin_tree_node(bin_node *root)$/;"	f
+recursion_free_node	bintree.c	/^static void recursion_free_node(bin_node *root)$/;"	f	file:
+recursion_inter_order_trverse	bintree.c	/^int recursion_inter_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+recursion_leaf	bintree.c	/^int	recursion_leaf(bin_node *root)$/;"	f
+recursion_post_order_trverse	bintree.c	/^int recursion_post_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+recursion_pre_order_trverse	bintree.c	/^int recursion_pre_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+rf	th_tree.c	/^	int	lf, rf;$/;"	m	struct:node	file:
+select_node	a.c	/^static void select_node(huff_tree_ptr ptree, int n, int *s1, int *s2)$/;"	f	file:
+select_node	huff.c	/^static void select_node(huff_node *root, int limit, int *s1, int *s2)$/;"	f	file:
+show_ad	bintree.c	/^static void show_ad(int n)$/;"	f	file:
+th_creat	th_tree.c	/^void th_creat(th_node **root, int nnode)$/;"	f
+th_node	th_tree.c	/^} th_node;$/;"	t	typeref:struct:node	file:
+thread_tree	th_tree.c	/^void thread_tree(th_node *root, th_node **head)$/;"	f
+threading	th_tree.c	/^void threading(th_node *root)$/;"	f
+time_ceed	bintree.c	/^static int	time_ceed = 0; $/;"	v	file:
+visit	th_tree.c	/^static void visit(th_node *root)$/;"	f	file:
+weight	a.c	/^	unsigned int	weight;$/;"	m	struct:__anon1	file:
+weight	huff.h	/^	int	weight;$/;"	m	struct:node
+zip	zip.c	/^static void zip(char *filename)$/;"	f	file:
