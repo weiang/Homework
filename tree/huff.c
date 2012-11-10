@@ -2,142 +2,115 @@
 	> File Name: huff.c
 	> Author: Weiang
 	> Mail: weiang@mail.ustc.edu.cn 
-	> Created Time: Fri 26 Oct 2012 12:56:19 PM CST
-    > Describition: "Huffman codes"
+	> Created Time: 2012年11月05日 星期一 22时54分07秒
+    > Describition: 
  ************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define	MAX	100
+#include "./huff.h"
 
-typedef char	element_type;
-
-typedef struct {
-	unsigned int	weight;
-	unsigned int	parent, lchild, rchild;
-	element_type	data;
-} huff_node, *huff_tree_ptr;
-
-typedef char ** huffman_code;
-/*
- * 从huff_tree_ptr 数组中选出两个weight最小的端点
- */
-static void select_node(huff_tree_ptr ptree, int n, int *s1, int *s2)
+/* 创建huffman树 */
+static void select_node(huff_node *root, int limit, int *s1, int *s2)
 {
 	int	i;
-	int	min_weight1 = 100, min_weight2 = 100;	// 假设min_weight1 <= min_weight2
 
-	for (i = 1; i <= n; i++, ptree ++) {
-		if (ptree -> parent == 0) {
-			if (ptree -> weight < min_weight1) {
-				min_weight2 = min_weight1;
-				min_weight1 = ptree -> weight;
+	*s1 = limit;
+	for ( i = 1; i <= limit; i ++)
+		if (root[i].parent == 0){
+			*s2 = i;
+			break;
+		}
+	for (i = i + 1; i < limit; i ++) {
+		if (root[i].parent == 0) {
+			if (root[i].weight < root[*s1].weight) {	// i节点的weight比s1节点的小
+				if (root[i].weight < root[*s2].weight)		// 比较i节点的weight和s2节点的weight
+					if (root[*s1].weight < root[*s2].weight)
+						*s2 = i;
+					else							
+						*s1 = i;
+				else {
+					*s1 = i;
+				}
 			}
-			else if (ptree -> weight < min_weight2)
-				min_weight2 = ptree -> weight;
+			else if (root[i].weight < root[*s2].weight)
+				*s2 = i;
 		}
 	}
-	*s1 = min_weight1;
-	*s2 = min_weight2;
-	return;
 }
 
-/*void recursion_pre_order_trverse(huff_tree_ptr root)
+
+huff_node *creat_huff_tree(int occurence[], int num, element_type *word)
 {
-	if (root -> rchild == 0 && root -> lchild == 0)
-		return;
-	else {
-		printf("%d\t", root -> weight);
-		recursion_pre_order(
-*/
+	int	m, i, s1, s2;
+	huff_node	*root;
 
-void huffman_codeing(huff_tree_ptr *ptree, huffman_code *pcode, int *w, int n, element_type *et)
-{	// w存放n个字符的权值，构造huffman树，并求出n个字符的huffman编码
-	
-	huff_tree_ptr	ptmp;
-	huff_tree_ptr	stack[MAX];
-	int				top = 0;int	m;
-	huff_tree_ptr	p;
+	if (num < 1)
+		return NULL;
+	m = 2 * num - 1;
+
+	root = (huff_node *)malloc((m + 1) * sizeof(huff_node));
+
+	for (i = 1; i <= num; i ++, occurence ++, word ++) {
+		root[i].weight = *occurence;
+		root[i].parent = 0;
+		root[i].lc = 0;
+		root[i].rc = 0;
+		root[i].data = *word;
+	}
+	for (; i <= m; i ++) {
+		root[i].weight = 0;
+		root[i].parent = 0;
+		root[i].lc = 0;
+		root[i].rc = 0;
+		root[i].data = 0;
+	}
+
+	for (i = num + 1; i <= m; i ++) {
+		select_node(root, i - 1, &s1, &s2);
+//		printf("%d %d\n", s1, s2);
+		root[s1].parent = i;
+		root[s2].parent = i;
+		root[i].lc = s1;
+		root[i].rc = s2;
+		root[i].weight = root[s1].weight + root[s2].weight;
+	}
+	for (i = 1; i <= m;i ++)
+		printf("%d data = %d, weight = %d, parent = %d, lc = %d, rc = %d\n", i, root[i].data, root[i].weight, root[i].parent, root[i].lc, root[i].rc);
+	return root;
+}
+
+char **huff_encoding(huff_node *root, int num)
+{
+	int	i, start, c, f;
 	char	*cd;
-	int	i, c, f, start;
-	int	s1, s2;
+	char	**encode_table;
 
-	if (n <= 1)
-		return;
-	m = 2 * n - 1;
-	(*ptree) = (huff_tree_ptr)malloc((m + 1) * sizeof (huff_node));
-	for (p = *ptree + 1, i = 1; i <= n; ++ i, ++ p, ++ w, ++ et) {
-		p -> weight = *w;
-		p -> parent = 0;
-		p -> lchild = 0;
-		p -> rchild = 0;
-		p -> data = *et;
-	}
-	for (; i <= m; ++ i, ++p) {
-		p -> weight = 0;
-		p -> parent = 0;
-		p -> lchild = 0;
-		p -> rchild = 0;
-	}
-	for ( i = n + 1; i <= m; i ++) {
-		select_node(*ptree, i - 1, &s1, &s2);
-		(*ptree)[s1].parent = i;
-		(*ptree)[s2].parent = i;
-		(*ptree)[i].lchild = s1;
-		(*ptree)[i].rchild = s2;
-		(*ptree)[i].weight = (*ptree)[s1].weight + (*ptree)[s2].weight;
-	}
-// 检查huffman树的生成状态
-	
-	ptmp = (*ptree)[m];
-	
-	while (top >= 0) {
-		while (ptmp -> rchild != 0 || ptmp -> lchild != 0) {
-			printf("%d\t", ptmp -> weight);
-			if (ptmp -> rchild)
-				stack[top ++] = (*ptree)[ptmp -> rchild];
-			ptmp = (*ptree)[ptmp -> lchild];
-		}
-		if (top >= 0)
-			ptmp = stack[-- top];
-	}
-
-/* 
- * 从叶子到根逆向求每个字符的huffman编码
- */
-	(*pcode) = (huffman_code)malloc((n + 1) * sizeof(char *));
-	cd = (char *)malloc(n * sizeof(char));
-	cd[n - 1] = '\0';
-	for (i = 1; i <= n; i ++) {
-		start = n - 1;
-		for (c = i, f = (*ptree)[i].parent; f != 0; c = f, f = (*ptree)[f].parent)			if ((*ptree)[f].lchild == c)
-					cd[-- start] = '0';
+	encode_table = (char **)malloc(sizeof(char *) * (num + 1));
+	cd = (char *)malloc(sizeof(char) * num);
+	cd[num - 1] = '\0';
+	for (i = 1; i <= num; i ++) {
+		start = num - 1;
+		for (c = i, f = root[i].parent; f != 0; c = f, f = root[f].parent) {
+			if (root[f].lc == c)
+				cd[-- start] = '0';
 			else 
-					cd[-- start] = '1';
-		(*pcode)[i] = (char *)malloc((n - start) * sizeof(char));
-		printf("%s\n", (*pcode)[i]);
-		strcpy((*pcode)[i], &(cd[start]));
+				cd[-- start] = '1';
+		}
+		encode_table[i] = (char *)malloc(sizeof(char) * (num - start));
+		strcpy(encode_table[i], &cd[start]);
+//		printf("%s\n", encode_table[i]);
 	}
 	free(cd);
+	return encode_table;
 }
 
-
-/*
- *  Test 
- */
-
-int main(void)
+/* 利用huffman树解码 */
+void huff_decoding(huff_node *root, char *article, char *aim)
 {
-	huff_tree_ptr	hufftree;
-	huffman_code	huffcode;
-	int	i;
+	int	index, bit;
+	int	front = 0;
 
-	int	arr[6] = {1, 1, 2, 2, 3, 3};
-	element_type s[6] = {'A', 'B', 'C', 'D', 'E', 'F'};
-
-	huffman_codeing(&hufftree, &huffcode, arr, 6, s);
-	for (i = 1; i <= 6; i ++)
-		printf("%s\n", huffcode[i]);
-	return 0;
 }
+	
