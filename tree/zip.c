@@ -67,7 +67,6 @@ static void enqueue(char *encode, int n, FILE *w)
 
 	if (rear + n >= limit) {
 		fwrite(bit_queue, sizeof(char), sizeof(bit_queue), w);
-		printf("write: %s\n", bit_queue);
 		memset(bit_queue, 0, sizeof(bit_queue));
 		rear = 0;
 	}
@@ -99,6 +98,7 @@ static void zip(char *filename)
 	
 	strcpy(zipped, filename);
 	strcat(zipped, ".zip");
+	memset(bit_queue, 0, sizeof(bit_queue));
 	memset(occur, 0, sizeof(occur));
 	get_occurence(occur, word, &nsyb, filename);
 //	for (i = 0; i < nsyb; i ++)
@@ -119,20 +119,14 @@ static void zip(char *filename)
 	fprintf(to, "%d", 0);
 	fprintf(to, FILE_FLAG);
 	fprintf(to, "%d", nsyb);
-	printf("nsyb = %d\n", nsyb);
-	for (i = 1; i <= 2 * nsyb; i ++) {
-		fwrite(&root[i], sizeof(*root), 1, to);
-	}			// 将huffman树的各个节点的信息以结构体存储到压缩文件中
+	fwrite(&root[1], sizeof(*root), 2 * nsyb - 1, to);	// 将huffman树的各个节点的信息以结构体存储到压缩文件中
 
 	while (!feof(from)) {
 		n = fread(buf, sizeof(char), sizeof(buf), from);
-//		printf("n = %d\n", n);
 		for (i = 0; i < n; i ++) {
 			for (k = 1; k <= nsyb; k ++)
 				if (buf[i] == root[k].data)
 					break;
-//			printf("%c ", buf[i]);
-			printf("k = %d codeing = %s ,size = %d \n", k, encoding_table[k], strlen(encoding_table[k]));
 			enqueue(encoding_table[k], strlen(encoding_table[k]), to);
 		
 		}
@@ -140,22 +134,25 @@ static void zip(char *filename)
 	if (rear != 0){
 		if (rear % BYTE_SIZE == 0) {
 			fwrite(bit_queue, sizeof(char), rear / BYTE_SIZE, to);
+//			for (i = 0; i < rear / BYTE_SIZE; i ++){
+//				fprintf(to, "%c", bit_queue[i]);
+//				printf("%c\n", bit_queue[i]);
+//			}
 			rewind(to);
 			fprintf(to, "%d", 0);
 			printf("0\n");
 		}
 		else {
-		//	fwrite(bit_queue, sizeof(char), rear / BYTE_SIZE + 1, to);
-			fprintf(to, "%c", bit_queue[0]);
-			for (i = 0; i < strlen(bit_queue); i ++)
-				printf("write: %c\n", bit_queue[i]);
+			fwrite(bit_queue, sizeof(char), rear / BYTE_SIZE + 1, to);
+		//	fprintf(to, "%c", bit_queue[0]);
+//			for (i = 0; i < rear / BYTE_SIZE + 1; i ++){
+//				fprintf(to, "%c", bit_queue[i]);
+//				printf("%c\n", bit_queue[i]);
+//			}
 			rewind(to);
 			fprintf(to, "%d", BYTE_SIZE - rear % BYTE_SIZE);
-		//	printf("last %d\n", BYTE_SIZE- rear % BYTE_SIZE);
 		}
-
 	}
-
 	fclose(from);
 	fclose(to);
 	return;

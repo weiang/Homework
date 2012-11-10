@@ -76,8 +76,8 @@ huff_node *creat_huff_tree(int occurence[], int num, element_type *word)
 		root[i].rc = s2;
 		root[i].weight = root[s1].weight + root[s2].weight;
 	}
-	for (i = 1; i <= m;i ++)
-		printf("%d data = %d, weight = %d, parent = %d, lc = %d, rc = %d\n", i, root[i].data, root[i].weight, root[i].parent, root[i].lc, root[i].rc);
+//	for (i = 1; i <= m;i ++)
+//		printf("%d data = %d, weight = %d, parent = %d, lc = %d, rc = %d\n", i, root[i].data, root[i].weight, root[i].parent, root[i].lc, root[i].rc);
 	return root;
 }
 

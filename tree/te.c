@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
 	}
 	fp = fopen(argv[1], "r");
 	n = fread(buf, sizeof(char), 500, fp);
-	printf("len = %d\n", strlen(buf));
 	for (i = 0; i  < strlen(buf); i ++)
 		printf("%c\n", n, buf[i]);
 	fclose(fp);
