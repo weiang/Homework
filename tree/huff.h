@@ -1,7 +1,7 @@
 #ifndef _HUFF_H_
 #define	_HUFF_H_
 
-#define ASIIC	128
+#define ASIIC	256	
 #define BUFSIZE	1024
 #define	FLAG_BIT	6
 #define FILE_FLAG	"WEIANG"

@@ -1,9 +1,9 @@
 /*************************************************************************
-	> File Name: unzip.c
-	> Author: Weiang
-	> Mail: weiang@mail.ustc.edu.cn 
-	> Created Time: 2012年11月10日 星期六 14时11分36秒
-    > Describition: 
+  > File Name: unzip.c
+  > Author: Weiang
+  > Mail: weiang@mail.ustc.edu.cn 
+  > Created Time: 2012年11月10日 星期六 14时11分36秒
+  > Describition: 
  ************************************************************************/
 
 #include <stdio.h>
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Usage: %s <filename> \n", argv[0]);
 		return EXIT_FAILURE;
 	}
-	
+
 	unzip(argv[1]);
 	return EXIT_SUCCESS;
 }
@@ -43,7 +43,7 @@ void unzip(char *filename)
 	strcat(to_name, "uzip");			// 生成解压文件名
 	from = fopen(filename, "r");
 	to = fopen(to_name, "w");
-	
+
 	fscanf(from, "%d", &piled_bit);
 	fread(f_flag, sizeof(char), FLAG_BIT, from);
 	if (strcmp(f_flag, FILE_FLAG) != 0) {
@@ -81,8 +81,11 @@ void unzip(char *filename)
 			}
 		}
 	}
-	if (rear != 0) 
+	if (rear != 0) {
 		fwrite(buf, sizeof(char), rear, to);
+		//buf[rear] = '\0';
+		//		fprintf(to, "%s", buf);
+	}
 	fclose(from);
 	fclose(to);
 }

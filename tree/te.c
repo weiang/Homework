@@ -13,18 +13,24 @@
 
 int main(int argc, char *argv[])
 {
-	char	buf[1024];
 	int		n;
+	char	c;
 	FILE *fp;
-
 	int	i;
+
 	if (argc != 2) {		
-		fprintf(stderr, "Usage %s <filename> \n", argv[1]);
+		fprintf(stderr, "Usage %s <filescale> \n", argv[1]);
 	}
-	fp = fopen(argv[1], "r");
-	n = fread(buf, sizeof(char), 500, fp);
-	for (i = 0; i  < strlen(buf); i ++)
-		printf("%c\n", n, buf[i]);
+
+	n = atoi(argv[1]);
+	fp = fopen(argv[1], "w");
+	c = 'A'; 
+	for (i = 0; i < n; i ++) {
+		if (c - 'A' >= 26)
+			c = 'A';
+		fprintf(fp, "%c", c);
+		c ++;
+	}
 	fclose(fp);
 	return 0;
 }

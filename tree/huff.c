@@ -105,12 +105,3 @@ char **huff_encoding(huff_node *root, int num)
 	free(cd);
 	return encode_table;
 }
-
-/* 利用huffman树解码 */
-void huff_decoding(huff_node *root, char *article, char *aim)
-{
-	int	index, bit;
-	int	front = 0;
-
-}
-	
