@@ -1,0 +1,206 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+CLOSE_TIME	bank_sim/bank_sim.c	5;"	d	file:
+DOWN	turtle.c	21;"	d	file:
+EAST	tur.c	2;"	d	file:
+ERROR	polyn/polyn.c	4;"	d	file:
+FALSE	turtle.c	18;"	d	file:
+MAX	bin_tree.c	18;"	d	file:
+MAX	hannoi/hannoi.c	4;"	d	file:
+N	stop_car/car_stopping.c	11;"	d	file:
+NORTH	tur.c	5;"	d	file:
+OK	polyn/polyn.c	3;"	d	file:
+PI	turtle.c	17;"	d	file:
+PRICE	stop_car/car_stopping.c	12;"	d	file:
+SOUTH	tur.c	3;"	d	file:
+TRUE	turtle.c	19;"	d	file:
+UP	turtle.c	20;"	d	file:
+WEST	tur.c	4;"	d	file:
+add	polyn/polyn.c	/^void add(void)$/;"	f
+add_polyn	polyn/polyn.c	/^void add_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b)$/;"	f
+akm	akm/akm.c	/^int akm(int m, int n)$/;"	f
+akm	akm/akm_r.c	/^int akm(int m, int n)$/;"	f
+arg	hannoi/hannoi.c	/^	struct argue	arg;$/;"	m	struct:__anon3	typeref:struct:__anon3::argue	file:
+argue	hannoi/hannoi.c	/^struct argue {$/;"	s	file:
+arrive	stop_car/car_stopping.c	/^void arrive(event_node *pnode)$/;"	f
+arrive_time	bank_sim/bank_sim.c	/^	int	arrive_time;	\/\/ Customer arrive time $/;"	m	struct:queue_node	file:
+arrive_time	stop_car/car_stopping.c	/^	int	arrive_time;$/;"	m	struct:qnode	file:
+bank_simulation	bank_sim/bank_sim.c	/^void bank_simulation(void)$/;"	f
+bin_node	bin_tree.c	/^} bin_node;$/;"	t	typeref:struct:node	file:
+bin_tree_copy	bin_tree.c	/^void bin_tree_copy(bin_node *t_from, bin_node **pt_to)$/;"	f
+by	hannoi/hannoi.c	/^	char	by;$/;"	m	struct:argue	file:
+car_list	stop_car/car_stopping.c	/^} car_list;$/;"	t	typeref:struct:__anon6	file:
+car_node	stop_car/car_stopping.c	/^} queue_node, car_node;$/;"	t	typeref:struct:qnode	file:
+car_num	stop_car/car_stopping.c	/^	int	car_num;$/;"	m	struct:lnode	file:
+car_num	stop_car/car_stopping.c	/^	int	car_num;$/;"	m	struct:qnode	file:
+cmp	bank_sim/bank_sim.c	/^int cmp(event_list_node *ea, event_list_node *eb)$/;"	f
+coef	polyn/polyn.c	/^	float	coef;$/;"	m	struct:link_list	file:
+color	turtle.c	/^	int	color;$/;"	m	struct:__anon8	file:
+color	turtle.c	/^	int	color;$/;"	m	struct:node	file:
+count	akm/akm.c	/^static count = 0;$/;"	v	file:
+creat_bin_tree	bin_tree.c	/^int creat_bin_tree(bin_node **root)$/;"	f
+creat_polyn	polyn/polyn.c	/^void creat_polyn(polyn *ppolyn, int m)$/;"	f
+customer	bank_sim/bank_sim.c	/^event_queue_node	customer;	\/\/ Customer that will be insert into queues$/;"	v
+customer_arrived	bank_sim/bank_sim.c	/^void customer_arrived(void)$/;"	f
+customer_departure	bank_sim/bank_sim.c	/^void customer_departure(void)$/;"	f
+data	bin_tree.c	/^	element_type	data;$/;"	m	struct:node	file:
+de_queue	bank_sim/bank_sim.c	/^void de_queue(event_queue *peventqueue, event_queue_node *pnode)$/;"	f
+de_queue	stop_car/car_stopping.c	/^void de_queue(link_queue *plinkqueue, queue_node *pnode)$/;"	f
+del_first_list_node	bank_sim/bank_sim.c	/^void del_first_list_node(event_list *peventlist, event_list_node *pnode)$/;"	f
+del_first_node	stop_car/car_stopping.c	/^void del_first_node(link_list *plinklist, event_node *pnode)$/;"	f
+depart	stop_car/car_stopping.c	/^void depart(event_node *pnode)$/;"	f
+dis_turtle	turtle.c	/^void dis_turtle(void)$/;"	f
+distance	bin_tree.c	/^int distance(bin_node *root, char term)$/;"	f
+draw	tur.c	/^void draw(int commands[],int size,int picture[][50],int rows,int cols)$/;"	f
+duration	bank_sim/bank_sim.c	/^	int	duration;	\/\/ Time needed for deal with things $/;"	m	struct:queue_node	file:
+el	stop_car/car_stopping.c	/^link_list	el;$/;"	v
+element_type	bin_tree.c	/^typedef char	element_type;$/;"	t	file:
+empty_queue	stop_car/car_stopping.c	/^int empty_queue(link_queue *plinkqueue)$/;"	f
+en	bank_sim/bank_sim.c	/^event_list_node	en;	\/\/ Event get from event link list to be dealt with$/;"	v
+en	stop_car/car_stopping.c	/^event_node	en;$/;"	v
+en_queue	bank_sim/bank_sim.c	/^void en_queue(event_queue *peventqueue, event_queue_node *pnode)$/;"	f
+en_queue	stop_car/car_stopping.c	/^void en_queue(link_queue *plinkqueue, queue_node *pnode)$/;"	f
+error	bank_sim/bank_sim.c	/^void error(char *msg)$/;"	f
+error	polyn/polyn.c	/^static error(char *msg)$/;"	f	file:
+error	stop_car/car_stopping.c	/^void error(char *msg)$/;"	f
+ev	bank_sim/bank_sim.c	/^event_list	ev;	\/\/ Event link list$/;"	v
+event_list	bank_sim/bank_sim.c	/^} event_list;$/;"	t	typeref:struct:__anon1	file:
+event_list_node	bank_sim/bank_sim.c	/^} event_list_node;$/;"	t	typeref:struct:list_node	file:
+event_node	stop_car/car_stopping.c	/^} event_node;$/;"	t	typeref:struct:lnode	file:
+event_queue	bank_sim/bank_sim.c	/^} event_queue;$/;"	t	typeref:struct:__anon2	file:
+event_queue_node	bank_sim/bank_sim.c	/^} event_queue_node;$/;"	t	typeref:struct:queue_node	file:
+event_type	bank_sim/bank_sim.c	/^	int	event_type;	\/* 0: customer depart$/;"	m	struct:list_node	file:
+event_type	stop_car/car_stopping.c	/^	int	event_type;	\/\/ 0: car arrive$/;"	m	struct:lnode	file:
+exchange_bin_tree_node	bin_tree.c	/^void exchange_bin_tree_node(bin_node *root)$/;"	f
+expn	polyn/polyn.c	/^	int	expn;$/;"	m	struct:link_list	file:
+from	hannoi/hannoi.c	/^	char	from;$/;"	m	struct:argue	file:
+front	bank_sim/bank_sim.c	/^	event_queue_node	*front, *rear;$/;"	m	struct:__anon2	file:
+front	stop_car/car_stopping.c	/^	queue_node	*front, *rear;$/;"	m	struct:__anon5	file:
+getCommand	tur.c	/^void getCommand(int commands[])$/;"	f
+getCommand1	tur.c	/^int getCommand1(int commands[],int size)$/;"	f
+getx	turtle.c	/^float getx(float s)$/;"	f
+gety	turtle.c	/^float gety(float s)$/;"	f
+h	turtle.c	/^	float	h, v;$/;"	m	struct:__anon7	file:
+hannoi	hannoi/hannoi.c	/^void hannoi(int n, int a, int b, int c, int pc)$/;"	f
+head	bank_sim/bank_sim.c	/^	event_list_node	*head;$/;"	m	struct:__anon1	file:
+head	stop_car/car_stopping.c	/^	car_node	*head;$/;"	m	struct:__anon6	file:
+head	stop_car/car_stopping.c	/^	event_node	*head;$/;"	m	struct:__anon4	file:
+heading	turtle.c	/^	float	heading;$/;"	m	struct:__anon8	file:
+height	bin_tree.c	/^int	height(bin_node *root)$/;"	f
+index_	hannoi/hannoi.c	/^int	index_ = 0;$/;"	v
+init_car_list	stop_car/car_stopping.c	/^void init_car_list(car_list *pcarlist)$/;"	f
+init_event_list	bank_sim/bank_sim.c	/^void init_event_list(event_list *peventlist)$/;"	f
+init_event_list	stop_car/car_stopping.c	/^void init_event_list(link_list	*plinklist)$/;"	f
+init_queue	bank_sim/bank_sim.c	/^void init_queue(event_queue *peventqueue)$/;"	f
+init_queue	stop_car/car_stopping.c	/^void init_queue(link_queue *plinkqueue)$/;"	f
+init_stop_area	stop_car/car_stopping.c	/^void init_stop_area(void)$/;"	f
+insert_car_list	stop_car/car_stopping.c	/^void insert_car_list(car_list *pcarlist, car_node *pnode)$/;"	f
+inter_order_trverse	bin_tree.c	/^int inter_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+is_full_stop	stop_car/car_stopping.c	/^int is_full_stop(car_list *pcarlist)$/;"	f
+lay_order_trverse	bin_tree.c	/^int	lay_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+lchild	bin_tree.c	/^	struct node		*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::node	file:
+leaf	bin_tree.c	/^int	 leaf(bin_node	*root)$/;"	f
+length	bank_sim/bank_sim.c	/^	int	length;	\/\/ The length of event link list$/;"	m	struct:__anon1	file:
+length	bank_sim/bank_sim.c	/^	int	length;$/;"	m	struct:__anon2	file:
+length	stop_car/car_stopping.c	/^	int	length;$/;"	m	struct:__anon4	file:
+length	stop_car/car_stopping.c	/^	int	length;$/;"	m	struct:__anon5	file:
+length	stop_car/car_stopping.c	/^	int	length;$/;"	m	struct:__anon6	file:
+link_list	polyn/polyn.c	/^typedef struct link_list {$/;"	s	file:
+link_list	stop_car/car_stopping.c	/^} link_list;$/;"	t	typeref:struct:__anon4	file:
+link_queue	stop_car/car_stopping.c	/^} link_queue;$/;"	t	typeref:struct:__anon5	file:
+list	polyn/polyn.c	/^}list, list_node;$/;"	t	typeref:struct:link_list	file:
+list_choice	polyn/polyn.c	/^void list_choice(void)$/;"	f
+list_node	bank_sim/bank_sim.c	/^typedef struct list_node {$/;"	s	file:
+list_node	polyn/polyn.c	/^}list, list_node;$/;"	t	typeref:struct:link_list	file:
+lnode	stop_car/car_stopping.c	/^typedef struct lnode {$/;"	s	file:
+locate_and_del_list	stop_car/car_stopping.c	/^int locate_and_del_list(car_list *pcarlist, int n, car_node *pnode) $/;"	f
+locate_and_del_queue_node	stop_car/car_stopping.c	/^int locate_and_del_queue_node(link_queue *plinkqueue, int n, queue_node *pnode)$/;"	f
+main	akm/akm.c	/^int main(void)$/;"	f
+main	akm/akm_r.c	/^int main(void)$/;"	f
+main	bank_sim/bank_sim.c	/^int main(void)$/;"	f
+main	bank_sim/rand.c	/^int main(void)$/;"	f
+main	bin_tree.c	/^int main(void)$/;"	f
+main	hannoi/hannoi.c	/^int main(void)$/;"	f
+main	polyn/polyn.c	/^int main(void)$/;"	f
+main	stop_car/car_stopping.c	/^int main(void)$/;"	f
+main	t.c	/^int main(void)$/;"	f
+main	tur.c	/^main()$/;"	f
+minnum	bank_sim/bank_sim.c	/^int minnum(event_queue q[])$/;"	f
+move	turtle.c	/^void move(int steps)$/;"	f
+move_to	turtle.c	/^void move_to(point new_pos)$/;"	f
+mul	polyn/polyn.c	/^void mul(void)$/;"	f
+mul_polyn	polyn/polyn.c	/^void mul_polyn(polyn_ptr polyn_a, polyn_ptr polyn_b, polyn_ptr polyn_mul)$/;"	f
+new_turtle	turtle.c	/^} new_turtle;$/;"	t	typeref:struct:__anon8	file:
+next	bank_sim/bank_sim.c	/^	struct	list_node	*next;$/;"	m	struct:list_node	typeref:struct:list_node::list_node	file:
+next	bank_sim/bank_sim.c	/^	struct queue_node	*next;$/;"	m	struct:queue_node	typeref:struct:queue_node::queue_node	file:
+next	polyn/polyn.c	/^	struct link_list	*next;$/;"	m	struct:link_list	typeref:struct:link_list::link_list	file:
+next	stop_car/car_stopping.c	/^	struct lnode	*next;$/;"	m	struct:lnode	typeref:struct:lnode::lnode	file:
+next	stop_car/car_stopping.c	/^	struct qnode	*next;$/;"	m	struct:qnode	typeref:struct:qnode::qnode	file:
+node	bin_tree.c	/^typedef struct node {$/;"	s	file:
+node	turtle.c	/^typedef struct node {$/;"	s	file:
+node	turtle.c	/^} node;$/;"	t	typeref:struct:node	file:
+num	hannoi/hannoi.c	/^	int	num;$/;"	m	struct:argue	file:
+num	hannoi/hannoi.c	/^static	num = 0;$/;"	v	file:
+num	stop_car/car_stopping.c	/^int	num = 0;$/;"	v
+occur_time	bank_sim/bank_sim.c	/^	int	occur_time;	\/\/ Time event happend$/;"	m	struct:list_node	file:
+occur_time	stop_car/car_stopping.c	/^	int	occur_time;$/;"	m	struct:lnode	file:
+open_for_day	bank_sim/bank_sim.c	/^void open_for_day(void)$/;"	f
+order_insert	bank_sim/bank_sim.c	/^void order_insert(event_list *peventlist, event_list_node *pnode)$/;"	f
+order_insert	stop_car/car_stopping.c	/^void order_insert(link_list *plinklist, event_node *pnode)$/;"	f
+out	bank_sim/bank_sim.c	/^FILE	*out;$/;"	v
+pc	hannoi/hannoi.c	/^	int	pc;$/;"	m	struct:__anon3	file:
+pen	turtle.c	/^	pen_state	pen;$/;"	m	struct:__anon8	file:
+pen_down	turtle.c	/^void pen_down(void)$/;"	f
+pen_up	turtle.c	/^void pen_up(void)$/;"	f
+point	turtle.c	/^} point;$/;"	t	typeref:struct:__anon7	file:
+polyn	polyn/polyn.c	/^typedef list	polyn, *polyn_ptr;$/;"	t	file:
+polyn_ptr	polyn/polyn.c	/^typedef list	polyn, *polyn_ptr;$/;"	t	file:
+pos	turtle.c	/^	point	pos;$/;"	m	struct:__anon8	file:
+post_order_trverse	bin_tree.c	/^int post_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+pre_get_value	bin_tree.c	/^void pre_get_value(bin_node *root, int k, element_type *val)$/;"	f
+pre_order_trverse	bin_tree.c	/^int pre_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+print	bin_tree.c	/^int print(bin_node *pnode)$/;"	f
+printArray	tur.c	/^void printArray(int a[][50],int rows,int cols)$/;"	f
+print_polyn	polyn/polyn.c	/^void print_polyn(polyn_ptr pployn)$/;"	f
+qnode	stop_car/car_stopping.c	/^typedef struct qnode {$/;"	s	file:
+queue	bank_sim/bank_sim.c	/^event_queue	queue[5];	\/\/ Queue[0]: customer arrive queue$/;"	v
+queue_node	bank_sim/bank_sim.c	/^typedef struct queue_node {$/;"	s	file:
+queue_node	stop_car/car_stopping.c	/^} queue_node, car_node;$/;"	t	typeref:struct:qnode	file:
+random_creat_bin_tree	bin_tree.c	/^int	random_creat_bin_tree(bin_node **root, int node)$/;"	f
+random_time	bank_sim/bank_sim.c	/^void random_time(int minute, int *durtime,  int *intertime)$/;"	f
+rchild	bin_tree.c	/^	struct node		*lchild, *rchild;$/;"	m	struct:node	typeref:struct:node::	file:
+rear	bank_sim/bank_sim.c	/^	event_queue_node	*front, *rear;$/;"	m	struct:__anon2	file:
+rear	stop_car/car_stopping.c	/^	queue_node	*front, *rear;$/;"	m	struct:__anon5	file:
+rec	hannoi/hannoi.c	/^record	rec[MAX];$/;"	v
+record	hannoi/hannoi.c	/^} record;$/;"	t	typeref:struct:__anon3	file:
+recursion_bin_tree_copy	bin_tree.c	/^void recursion_bin_tree_copy(bin_node *t_from, bin_node **pt_to)$/;"	f
+recursion_del_subtree	bin_tree.c	/^void recursion_del_subtree(bin_node	*root, element_type	val)$/;"	f
+recursion_exchange_bin_tree_node	bin_tree.c	/^void recursion_exchange_bin_tree_node(bin_node *root)$/;"	f
+recursion_free_node	bin_tree.c	/^static void recursion_free_node(bin_node *root)$/;"	f	file:
+recursion_leaf	bin_tree.c	/^int	recursion_leaf(bin_node *root)$/;"	f
+recursion_pre_order_trverse	bin_tree.c	/^int recursion_pre_order_trverse(bin_node *root, int visit(bin_node *))$/;"	f
+reverse	polyn/polyn.c	/^void reverse(polyn *ppolyn)$/;"	f
+seed	bank_sim/bank_sim.c	/^static  seed = 0;$/;"	v	file:
+set_turtle_color	turtle.c	/^void set_turtle_color(int color)$/;"	f
+start_turtle_graphics	turtle.c	/^void start_turtle_graphics(void)$/;"	f
+stop_list	stop_car/car_stopping.c	/^car_list	stop_list;$/;"	v
+sub	polyn/polyn.c	/^void sub(void)$/;"	f
+sub_polyn	polyn/polyn.c	/^void sub_polyn(polyn_ptr pa, polyn_ptr pb)$/;"	f
+time_ceed	bin_tree.c	/^static int	time_ceed = 0; $/;"	v	file:
+to	hannoi/hannoi.c	/^	char	to;$/;"	m	struct:argue	file:
+total_customers	bank_sim/bank_sim.c	/^int	total_customers;	\/\/ The number of costomers $/;"	v
+total_money	stop_car/car_stopping.c	/^float	total_money = .0;$/;"	v
+total_time	bank_sim/bank_sim.c	/^long	total_time;	\/\/ Time all customers spent in bank$/;"	v
+turn	turtle.c	/^void turn(int	degrees)$/;"	f
+turtle_heading	turtle.c	/^int turtle_heading(void)$/;"	f
+turtle_pos	turtle.c	/^point *turtle_pos(void)$/;"	f
+v	turtle.c	/^	float	h, v;$/;"	m	struct:__anon7	file:
+wait_queue	stop_car/car_stopping.c	/^link_queue	wait_queue;$/;"	v
+x1	turtle.c	/^	int	x1, x2, y1, y2;$/;"	m	struct:node	file:
+x2	turtle.c	/^	int	x1, x2, y1, y2;$/;"	m	struct:node	file:
+y1	turtle.c	/^	int	x1, x2, y1, y2;$/;"	m	struct:node	file:
+y2	turtle.c	/^	int	x1, x2, y1, y2;$/;"	m	struct:node	file:
