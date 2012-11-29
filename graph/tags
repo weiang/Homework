@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+BLK	graph.h	/^typedef enum {WHT, GRAY, BLK} color;	\/\/ Record the status of the vertexs$/;"	e	enum:__anon2
+DG	graph.h	/^typedef enum {DG, DN, UDG, UDN} graph_kind;	$/;"	e	enum:__anon1
+DN	graph.h	/^typedef enum {DG, DN, UDG, UDN} graph_kind;	$/;"	e	enum:__anon1
+GRAY	graph.h	/^typedef enum {WHT, GRAY, BLK} color;	\/\/ Record the status of the vertexs$/;"	e	enum:__anon2
+INF	graph.h	6;"	d
+MAX	graph.h	4;"	d
+NIL	graph.h	5;"	d
+UDG	graph.h	/^typedef enum {DG, DN, UDG, UDN} graph_kind;	$/;"	e	enum:__anon1
+UDN	graph.h	/^typedef enum {DG, DN, UDG, UDN} graph_kind;	$/;"	e	enum:__anon1
+WHT	graph.h	/^typedef enum {WHT, GRAY, BLK} color;	\/\/ Record the status of the vertexs$/;"	e	enum:__anon2
+_GRAPH_H_	graph.h	2;"	d
+adj_vex	graph.h	/^	int		adj_vex;$/;"	m	struct:node
+arc_node	graph.h	/^} arc_node;$/;"	t	typeref:struct:node
+arc_num	graph.h	/^	int			vex_num, arc_num;	\/\/ 图的当前顶点数和弧数$/;"	m	struct:graph
+color	graph.h	/^typedef enum {WHT, GRAY, BLK} color;	\/\/ Record the status of the vertexs$/;"	t	typeref:enum:__anon2
+dfs	graph.cc	/^static void dfs(graph g, int s)$/;"	f	file:
+dg_creat	graph.cc	/^static void dg_creat(graph &g)$/;"	f	file:
+dis	graph.h	/^	int		dis;	\/\/ 该节点被访问的时间（status = GRAY）	$/;"	m	struct:__anon3
+f	graph.cc	/^int		f[MAX];$/;"	v
+f	graph.h	/^	int		f;		\/\/ 访问该节点的结束时间（status = BLK）$/;"	m	struct:__anon3
+first_arc	graph.h	/^	arc_node	*first_arc;	\/\/ 当为无向图时指向邻接表$/;"	m	struct:__anon3
+flag	graph.cc	/^static int flag = 0;		\/\/ 标志是否已找到一条简单路径$/;"	v	file:
+g_bfs	graph.cc	/^void g_bfs(graph &g, int vex)$/;"	f
+g_creat	graph.cc	/^void g_creat(graph &g)$/;"	f
+g_delete	graph.cc	/^void g_delete(graph g)$/;"	f
+g_dfs	graph.cc	/^void g_dfs(graph &g)$/;"	f
+graph	graph.h	/^typedef struct graph {$/;"	s
+graph	graph.h	/^} graph;$/;"	t	typeref:struct:graph
+graph_dfs	graph.cc	/^void graph_dfs(graph g) $/;"	f
+graph_kind	graph.h	/^typedef enum {DG, DN, UDG, UDN} graph_kind;	$/;"	t	typeref:enum:__anon1
+graph_show	graph.cc	/^void graph_show(graph g, int choice)$/;"	f
+i_dfs	graph.cc	/^static void i_dfs(graph g, int s)$/;"	f	file:
+in_arc	graph.h	/^	arc_node	*in_arc;	\/\/ 当为无向图时为NULL$/;"	m	struct:__anon3
+info	graph.h	/^	int	info;$/;"	m	struct:__anon3
+is_acyclic	graph.cc	/^int	is_acyclic(graph g)$/;"	f
+kind	graph.h	/^	graph_kind	kind;				\/\/ 图种类标志$/;"	m	struct:graph
+main	test.cc	/^int main(void)$/;"	f
+next_arc	graph.h	/^	struct node	*next_arc;$/;"	m	struct:node	typeref:struct:node::node
+node	graph.h	/^typedef struct node {$/;"	s
+parent	graph.h	/^	int		parent;		\/\/ 顶点遍历过程中该顶点的前驱顶点$/;"	m	struct:__anon3
+print_path	graph.cc	/^void print_path(graph g, int s, int t)$/;"	f
+print_topsort	graph.cc	/^int print_topsort(graph g)$/;"	f
+status	graph.h	/^	color	status;	$/;"	m	struct:__anon3
+t	graph.cc	/^static int	t;	\/\/ Record the time of the DFS process$/;"	v	file:
+time_	graph.cc	/^static int	time_ = 0;	\/\/ 事件发生时间$/;"	v	file:
+topsort	graph.cc	/^int topsort(graph g, int **t)$/;"	f
+udg_creat	graph.cc	/^static void udg_creat(graph &g)$/;"	f	file:
+vex_node	graph.h	/^} vex_node;$/;"	t	typeref:struct:__anon3
+vex_num	graph.h	/^	int			vex_num, arc_num;	\/\/ 图的当前顶点数和弧数$/;"	m	struct:graph
+vextices	graph.h	/^	vex_node	vextices[MAX];		\/\/ 顶点向量$/;"	m	struct:graph
+visited	graph.h	/^	int		visited;	$/;"	m	struct:__anon3
+w	graph.h	/^	int		w;			\/\/ The weight of the arc$/;"	m	struct:node

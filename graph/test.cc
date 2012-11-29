@@ -19,7 +19,12 @@ int main(void)
 	int		*p;
 
 	g_creat(g);
-	cout << is_acyclic(g) << endl;
-	print_topsort(g);
+//	cout << is_acyclic(g) << endl;
+//	print_topsort(g);
+	graph_dfs(g);
+	graph_show(g, 0);
+	graph_show(g, 1);
+	graph_bfs(g, 0);
+	graph_show(g, 2);
 	return 0;
 }

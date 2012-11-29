@@ -50,6 +50,7 @@ static void udg_creat(graph &g)
 		g.vextices[vj].first_arc = ptmp;
 	}
 }
+
 /* 创建有向图 */
 static void dg_creat(graph &g)
 {
@@ -86,6 +87,7 @@ static void dg_creat(graph &g)
 void g_creat(graph &g)
 {
 	scanf("%d", (int *)&(g.kind));
+//	cout << g.kind << endl;
 	switch (g.kind) {
 		case	DG:	
 			dg_creat(g);
@@ -156,7 +158,7 @@ void print_path(graph g, int s, int t)
 // 深度优先搜索
 static int	time_ = 0;	// 事件发生时间
 int		f[MAX];
-void dfs(graph &g, int s)
+static void dfs(graph g, int s)
 {
 	time_ ++;
 	g.vextices[s].visited = 1;
@@ -281,3 +283,138 @@ void g_delete(graph g)
 	}
 	return;
 }
+
+/* 
+ * The improved version of DFS 
+ */
+static int	t;	// Record the time of the DFS process
+static void i_dfs(graph &g, int s)
+{
+	t ++;
+//	cout << s << " " << t << endl;
+	g.vextices[s].dis = t;
+	g.vextices[s].status = GRAY;
+//	cout <<  g.vextices[s].status << endl;
+	arc_node *tmp = g.vextices[s].first_arc;
+	while (tmp) {
+		int k = tmp -> adj_vex;
+		if (g.vextices[k].status == WHT) {
+			g.vextices[k].parent = s;
+	//		g.vextices[k].dis = g.vextices[s].dis + 1;
+			i_dfs(g, k);
+		}
+		tmp = tmp -> next_arc;
+	}
+	t ++;
+//	cout << s << " " << t << endl;
+	g.vextices[s].f = t;
+	g.vextices[s].status = BLK;
+}
+
+void graph_dfs(graph &g) 
+{
+	t = 0;
+	// Initilization
+	for (int i = 0; i < g.vex_num; i ++) {
+			g.vextices[i].parent = NIL;
+			g.vextices[i].dis = INF;
+			g.vextices[i].f = INF;
+			g.vextices[i].status = WHT;
+	}
+	for (int i = 0; i < g.vex_num; i ++) {
+//		cout << "Node " << i << " status: " 
+//			 << g.vextices[i].status << endl;
+		if (g.vextices[i].status == WHT) {
+			i_dfs(g, i);
+		}
+	}
+}
+
+/* 
+ * Improved version of print_path
+ */
+void graph_show(graph g, int choice)
+{
+	if (choice == 0) {
+		for (int i = 0; i < g.vex_num; i ++) {
+			vex_node	*tmp = &(g.vextices[i]);
+			cout << "Node " << tmp -> info
+				 << ": adj_vex ";
+			arc_node	*k = tmp -> first_arc;
+			while (k != NULL) {
+				cout << g.vextices[k -> adj_vex].info << " ";
+				k = k -> next_arc;
+			}
+			cout << endl;
+		}
+	}
+	// Print DFS tree
+	if (choice == 1) {
+		for (int i = 0; i < g.vex_num; i ++) {
+			vex_node	*tmp = &(g.vextices[i]);
+			int t;
+			t = i;
+			cout << "Node " << tmp -> info << ": discovered time "
+				 << tmp -> dis << " finished time " << tmp -> f << endl;
+			cout << "Path: ";
+			while (t != NIL) {
+				cout << g.vextices[t].info << "-->";
+				t = g.vextices[t].parent;
+			}
+			cout << "NIL" << endl;
+		}
+	}
+	// Print BFS tree
+	if (choice == 2) {
+		for (int i = 0; i < g.vex_num; i ++) {
+			vex_node	*tmp = &(g.vextices[i]);
+			int t = i;
+			cout << "Node " << tmp -> info << ": distace " 
+				 << tmp -> dis << endl;
+			while (t != NIL) {
+				cout << g.vextices[t].info << "-->";
+				t = g.vextices[t].parent;
+			}
+			cout << "NIL" << endl;
+		}
+	}
+}
+/*
+ * Impooved version of BFS
+ */
+void graph_bfs(graph &g, int s)
+{
+	// Initilization
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].parent = NIL;
+		g.vextices[i].dis = INF;
+		g.vextices[i].status = WHT;
+	}
+
+	g.vextices[s].parent = NIL;
+	g.vextices[s].dis = 0;
+	g.vextices[s].status = GRAY;
+	int	queue[MAX];
+	int	rear, front;
+
+	rear = front = 0;
+	queue[rear ++] = s;
+
+	while (rear != front) {
+		int	u = queue[front ++];
+		arc_node	*tmp = g.vextices[u].first_arc;
+		while (tmp) {
+			if (g.vextices[tmp -> adj_vex].status == WHT) {
+				g.vextices[tmp -> adj_vex].status = GRAY;
+				g.vextices[tmp -> adj_vex].parent = u;
+				g.vextices[tmp -> adj_vex].dis = g.vextices[u].dis + 1;
+				queue[rear ++] = tmp -> adj_vex;
+			}
+			tmp = tmp -> next_arc;
+		}
+		g.vextices[s].status = BLK;
+	}
+}
+
+
+
