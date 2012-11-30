@@ -20,41 +20,52 @@ static void udn_creat(graph &g);
 static void udg_creat(graph &g);
 static void dg_creat(graph &g);
 
-/* 创建无向图 */
+
+/* 
+ * 创建无向图 
+ */
 static void udg_creat(graph &g)
 {
 	int		i, j;
-	int		vi, vj;
+	int		vi, vj, w;
 	arc_node	*ptmp;
 
+	cout << "Enter vertices and arc number: " << endl;
 	scanf("%d%d", &g.vex_num, &g.arc_num);
-	
+
+	// Initl=ilize vertices information
 	for (i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].first_arc = NULL;
 		g.vextices[i].info = i + 1;
-		g.vextices[i].parent = NIL;
-		g.vextices[i].visited = 0;
+		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
+	
+	cout << "Enter vertices relations:(vi vj weight) " << endl;
+	// Creat arc from the information inputed
 	for (i = 0; i < g.arc_num; i ++) {
-		scanf("%d%d", &vi, &vj);
+		cin >> vi >> vj >> w;
 		vi --;
 		vj --;
 		ptmp = new arc_node;
 		ptmp -> adj_vex = vj;
+		ptmp -> w = w;
 		ptmp -> next_arc = g.vextices[vi].first_arc;
 		g.vextices[vi].first_arc = ptmp;
 		ptmp = new arc_node;
 		ptmp -> adj_vex = vi;
+		ptmp -> w = w;
 		ptmp -> next_arc = g.vextices[vj].first_arc;
 		g.vextices[vj].first_arc = ptmp;
 	}
 }
 
-/* 创建有向图 */
+/* 
+ * 创建有向图 
+ */
 static void dg_creat(graph &g)
 {
-	int		vi, vj;
+	int		vi, vj, w;
+	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
 
 	// 初始化顶点节点
@@ -62,30 +73,98 @@ static void dg_creat(graph &g)
 		g.vextices[i].info = i + 1;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
-		g.vextices[i].parent = NIL;
-		g.vextices[i].visited = 0;
-		g.vextices[i].dis = 0;
 	}
 	
 	// 获取弧信息
+	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
-		cin >> vi >> vj;
+		cin >> vi >> vj >> w;
 		vi --;
 		vj --;
 		arc_node	*tmp = new arc_node;
 		tmp -> adj_vex = vj;
+		tmp -> w = w;
 		tmp -> next_arc = g.vextices[vi].first_arc;
 		g.vextices[vi].first_arc = tmp;
+	
 		tmp = new arc_node;
 		tmp -> adj_vex = vi;
+		tmp -> w = w;
 		tmp -> next_arc = g.vextices[vj].in_arc;
 		g.vextices[vj].in_arc = tmp;
 	}
 }
 
+/*
+ * 创建有向网
+ */
+static void dn_creat(graph &g)
+{
+	cout << "Enter vertices and arc number: " << endl;
+	cin >> g.vex_num >> g.arc_num;
+
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].info = i + 1;
+		g.vextices[i].first_arc = NULL;
+		g.vextices[i].in_arc = NULL;
+	}
+
+	cout << "Enter vertices relation:(vi vj weight) " << endl;
+	for (int i = 0; i < g.arc_num; i ++) {
+		int	rlt[3];
+		cin >> rlt[0] >> rlt[1] >> rlt[2];
+		rlt[0] --;
+		rlt[1] --;
+	
+		// Insert <rlt[0], rlt[1]> into rlt[0]'s out-adj list
+		arc_node	*tmp = new arc_node;
+		tmp -> adj_vex = rlt[1];
+		tmp -> w = rlt[2];
+		tmp -> next_arc = g.vextices[rlt[0]].first_arc;
+		g.vextices[rlt[0]].first_arc = tmp;
+		
+		// Insert <rlt[0], rlt[1]> into rlt[1]'s in-adj list
+		tmp = new arc_node;
+		tmp -> adj_vex = rlt[0];
+		tmp -> w = rlt[2];
+		tmp -> next_arc = g.vextices[rlt[1]].in_arc;
+		g.vextices[rlt[1]].in_arc = tmp;
+	}
+}
+
+/* 
+ * 创建无向网
+ */
+static void udn_creat(graph &g)
+{
+	cout << "Enter vertices and arc number: " << endl;
+	cin >> g.vex_num >> g.arc_num;
+
+	cout << "Enter vertices relations:(vj vj weight) " << endl;
+	for (int i = 0; i < g.arc_num; i ++) {
+		int vi, vj, w;
+		cin >> vi >> vj >> w;
+		vi --;
+		vj --;
+		arc_node	*tmp = new arc_node;
+		tmp -> adj_vex = vj;
+		tmp -> w = w;
+		tmp -> next_arc = g.vextices[vi].first_arc;
+		g.vextices[vi].first_arc = tmp;
+
+		tmp = new arc_node;
+		tmp -> adj_vex = vi;
+		tmp -> w = w;
+		tmp -> next_arc = g.vextices[vj].first_arc;
+		g.vextices[vj].first_arc = tmp;
+	}
+}
+
+	
 // 构建图
 void g_creat(graph &g)
 {
+	cout << "Enter Graph kind: " << endl;
 	scanf("%d", (int *)&(g.kind));
 //	cout << g.kind << endl;
 	switch (g.kind) {
@@ -93,13 +172,13 @@ void g_creat(graph &g)
 			dg_creat(g);
 			break;
 		case	DN:	
-//			dn_creat(g);
+			dn_creat(g);
 			break;
 		case	UDG:
 			udg_creat(g);
 			break;
 		case	UDN:
-//			udn_creat(g);
+			udn_creat(g);
 			break;
 	}
 }
@@ -192,14 +271,17 @@ void g_dfs(graph &g)
 	}
 }
 
-/* 拓扑排序 */
+/* 
+ * Topological Sorting 
+ */
+// Return the pointer to the sorted vertices if normal
+// Return NULL if the graph is not a DGA
 int topsort(graph g, int **t)
 {
 	if (g.kind != DN && g.kind != DG) {
 		cerr << "Error: Graph inputed is not allowed!" << endl;
 		return -1;
 	}
-
 	int	*st = new int[g.vex_num];
 	*t = st;
 	memset(st, 0, sizeof(st) * g.vex_num);
@@ -207,6 +289,7 @@ int topsort(graph g, int **t)
 	memset(degree, 0, sizeof(degree));
 	int	top = -1;	// 栈顶指针
 
+	int	cnt = 0;	// 已经拓扑排序过的顶数
 	for (int i = 0; i < g.vex_num; i ++) {
 		arc_node	*tmp;
 		tmp = g.vextices[i].in_arc;
@@ -220,12 +303,11 @@ int topsort(graph g, int **t)
 		}
 	}
 
-	int	cnt = 0;
 	while (top != -1) {
 		int		i;
 		i = top;
 		top = degree[top];		// 栈顶指针出栈
-		st[cnt ++] = g.vextices[i].info;
+		st[cnt ++] = i;
 		arc_node	*tmp = g.vextices[i].first_arc;
 		while (tmp != NULL) {
 			if (-- degree[tmp -> adj_vex] == 0) {
@@ -235,7 +317,6 @@ int topsort(graph g, int **t)
 			tmp = tmp -> next_arc;
 		}
 	}
-//	cout << endl;
 	if (cnt != g.vex_num)
 		return -1;
 	return 0;
@@ -335,15 +416,27 @@ void graph_dfs(graph &g)
  */
 void graph_show(graph g, int choice)
 {
+
 	if (choice == 0) {
 		for (int i = 0; i < g.vex_num; i ++) {
 			vex_node	*tmp = &(g.vextices[i]);
 			cout << "Node " << tmp -> info
-				 << ": adj_vex ";
+				 << ":(out adj_vex) ";
 			arc_node	*k = tmp -> first_arc;
 			while (k != NULL) {
-				cout << g.vextices[k -> adj_vex].info << " ";
+				cout << g.vextices[k -> adj_vex].info << "(w="
+					 << k -> w << ") ";
 				k = k -> next_arc;
+			}
+			cout << endl;
+			k = tmp -> in_arc;
+			if (k) {
+				cout << "\t(in adj_vex) ";
+				while (k != NULL) {
+					cout << g.vextices[k -> adj_vex].info << "(w="
+						 << k -> w << ") ";
+					k = k -> next_arc;
+				}
 			}
 			cout << endl;
 		}
@@ -410,11 +503,169 @@ void graph_bfs(graph &g, int s)
 				g.vextices[tmp -> adj_vex].dis = g.vextices[u].dis + 1;
 				queue[rear ++] = tmp -> adj_vex;
 			}
-			tmp = tmp -> next_arc;
-		}
-		g.vextices[s].status = BLK;
+			tmp = tmp -> next_arc; } g.vextices[s].status = BLK;
 	}
 }
 
 
+/*************************
+ *  Shortest path problem*
+ *************************/
 
+/*
+ * Dijkstra's algorithom
+ */
+
+/* Initilizatize the vertices in graph */
+static void init_single_source(graph &g, int s)
+{
+	for (int i = 0; i < g.vex_num; i ++ ) {
+		g.vextices[i].parent = NIL;
+		g.vextices[i].dis = INF;
+		g.vextices[i].status = WHT;
+	}
+	g.vextices[s].dis = 0;
+	g.vextices[s].status = BLK;	// Add s to S
+	arc_node	*tmp = g.vextices[s].first_arc;
+	while(tmp) {
+		g.vextices[tmp -> adj_vex].dis = tmp -> w;
+		g.vextices[tmp -> adj_vex].parent = s;
+		tmp = tmp -> next_arc;
+	}
+}
+
+/* Relax the arc <u,v> with weight w */
+static void relax(graph &g, int u, int v, int w)
+{
+	if (g.vextices[u].dis + w < g.vextices[v].dis) {
+		g.vextices[v].dis = g.vextices[u].dis + w;
+		g.vextices[v].parent = u;
+	}
+}
+
+/* Return the v whose g.vextices[v].dis is minimum among the vertices adj to u */
+   static int extract_min(graph &g)
+{	
+	int	min = INF;
+	int v = -1;
+	for (int i = 0; i < g.vex_num; i ++) {
+		if (g.vextices[i].status == WHT) {
+			if (g.vextices[i].dis < min) {
+				min = g.vextices[i].dis;
+				v = i;
+			}
+		}
+	}
+	if (v != -1)
+		g.vextices[v].status = BLK;
+	return v;
+}
+
+void sp_dij(graph &g, int s)
+{
+	init_single_source(g, s); 
+
+	while (1) {
+/*		flag = 1;
+		for (int i = 0; i < g.vex_num; i ++)
+			if (g.vextices[i].status == WHT)
+				flag = 0;
+		if (flag == 0)
+			break;		// Have found the shortest path from s to any other vertices reachable to s
+*/		s = extract_min(g);
+		if (s < 0) {
+			break;
+		}	
+		arc_node	*tmp = g.vextices[s].first_arc;
+		while (tmp != NULL) {
+			if (g.vextices[tmp -> adj_vex].status == WHT)
+				relax(g, s, tmp -> adj_vex, tmp -> w);
+			tmp = tmp -> next_arc;
+		}
+	}
+}
+
+static void result_show(graph g, int s, int v)
+{
+	if (s == v)
+		cout << s << " ";
+	else {
+		if (g.vextices[v].parent == NIL) 
+			cout << "No path!!!" << endl;
+		else {
+			result_show(g, s, g.vextices[v].parent);
+			cout << v << " ";
+		}
+	}
+}
+/* Show the result of the Dijkstra's algorithm */
+void sp_show(graph g, int s)
+{
+	for (int i = 0; i < g.vex_num; i ++) {
+		if (i != s) {
+			cout << "The shortest path from node " << s 
+				 << " to " << i << " :(weight = " << g.vextices[i].dis
+				 << ") ";
+			result_show(g, s, i);
+			cout << endl;
+		}
+	}
+}
+
+/*
+ * The Bellman-Ford algorithm
+ */
+// Return 0 if bf course is normal
+// Return -1 if g include cycline that can be reached from s
+int sp_bf(graph &g, int s)
+{
+	init_single_source(g, s);
+
+	for (int i = 0; i < g.vex_num - 1; i ++) {
+		for (int j = 0; j < g.vex_num; j ++) {
+			arc_node	*tmp = g.vextices[j].first_arc;
+			while (tmp) {
+				relax(g, j, tmp -> adj_vex, tmp -> w);
+				tmp = tmp -> next_arc;
+			}
+		}
+	}
+
+	int flag = 0;
+	for (int i = 0; i < g.vex_num; i ++) {
+		arc_node	*tmp = g.vextices[i].first_arc;
+		while (tmp) {
+			if (g.vextices[tmp -> adj_vex].dis > g.vextices[i].dis + tmp -> w)
+				flag = 1;
+			tmp = tmp -> next_arc;
+		}
+	}
+	if (flag) {
+		cout << "Directed cycline in graph!!!" << endl;
+		return -1;
+	}
+	return 0;
+}
+
+/* 
+ * Single source shortest path in directed acyclie graphs (DAG)
+ */
+// Relaxing arcs in the order sorted by the topological sort technology
+// It can only be used in DAG
+int sp_topsort(graph &g, int s)
+{	
+	int	*p;
+	if (topsort(g, &p) == -1) {
+		cerr << "It's not a DGA!!!" << endl;
+		return -1;
+	}
+	init_single_source(g, s);
+	for (int i = 0; i < g.vex_num; i ++) {
+		arc_node	*tmp = g.vextices[p[i]].first_arc;
+		while (tmp) {
+			relax(g, p[i], tmp -> adj_vex, tmp -> w);
+			tmp = tmp -> next_arc;
+		}
+	}
+	return 0;
+}

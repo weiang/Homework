@@ -30,6 +30,7 @@ typedef struct {
 	int		dis;	// 该节点被访问的时间（status = GRAY）	
 	color	status;	
 	int		f;		// 访问该节点的结束时间（status = BLK）
+	int		w;
 } vex_node;
 
 // 图
@@ -53,6 +54,10 @@ extern void g_delete(graph);
 extern void graph_dfs(graph&);
 extern void graph_bfs(graph&, int);
 extern void graph_show(graph, int);
+extern void sp_dij(graph &, int);
+extern void sp_show(graph, int);
+extern int	sp_bf(graph &, int);
+extern int  sp_topsort(graph &, int);
 
 #endif	// _GRAPH_H_
 
