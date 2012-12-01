@@ -26,8 +26,8 @@ int main(void)
 		printf("%d\n", g.vextices[i].parent);
 */	
 //	dij_show(g, 0);
-	sp_topsort(g, 0);
-	sp_show(g, 0);
+//	sp_topsort(g, 0);
+//	sp_show(g, 0);
 //	cout << is_acyclic(g) << endl;
 //	topsort(g, &p);
 //	print_topsort(g);
@@ -36,5 +36,9 @@ int main(void)
 //	graph_show(g, 1);
 //	graph_bfs(g, 0);
 //	graph_show(g, 2);
+	kruscal(g);
+	cout << "Prim Alg" << endl;
+	prim(g, 0);
+	prim_show(g);
 	return 0;
 }

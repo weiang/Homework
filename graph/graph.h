@@ -16,7 +16,8 @@ typedef struct node {
 	int		adj_vex;
 	int		w;			// The weight of the arc
 	struct node	*next_arc;
-	
+	int		add;		// Reserve
+	int		status;
 } arc_node;
 // 顶节点	
 typedef struct {
@@ -58,7 +59,9 @@ extern void sp_dij(graph &, int);
 extern void sp_show(graph, int);
 extern int	sp_bf(graph &, int);
 extern int  sp_topsort(graph &, int);
-
+extern int	kruscal(graph &);
+extern int	prim(graph &, int s);
+extern void	prim_show(graph &);
 #endif	// _GRAPH_H_
 
 

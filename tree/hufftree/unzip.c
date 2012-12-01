@@ -41,8 +41,8 @@ void unzip(char *filename)
 	to_name = (char *)malloc(sizeof(char) * (strlen(filename) + 1));
 	strncpy(to_name, filename, strlen(filename) - 3);
 	strcat(to_name, "uzip");			// 生成解压文件名
-	from = fopen(filename, "r");
-	to = fopen(to_name, "w");
+	from = fopen(filename, "rb");
+	to = fopen(to_name, "wb");
 
 	fscanf(from, "%d", &piled_bit);
 	fread(f_flag, sizeof(char), FLAG_BIT, from);

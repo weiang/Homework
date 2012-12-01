@@ -140,6 +140,11 @@ static void udn_creat(graph &g)
 	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
 
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].info = i + 1;
+		g.vextices[i].first_arc = NULL;
+		g.vextices[i].in_arc = NULL;
+	}
 	cout << "Enter vertices relations:(vj vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
 		int vi, vj, w;
@@ -508,9 +513,9 @@ void graph_bfs(graph &g, int s)
 }
 
 
-/*************************
- *  Shortest path problem*
- *************************/
+/****************************
+ *  Shortest path problem   *
+ ****************************/
 
 /*
  * Dijkstra's algorithom
@@ -669,3 +674,246 @@ int sp_topsort(graph &g, int s)
 	}
 	return 0;
 }
+
+
+/*************************
+ * Minimum Spanning Tree *
+ *************************/
+
+/* 
+ * Kruscal algorithm
+ */
+// Find the represent vertex of s
+static int find(graph &g, int s)
+{
+	int	x;
+	
+	for (x = s; g.vextices[x].parent >= 0; x = g.vextices[x].parent)
+		;
+	while (x != s) {
+		int tmp = g.vextices[s].parent;
+		g.vextices[s].parent = x;
+		s = tmp;
+	}
+	return x;
+}
+
+static void merge(graph &g, int s, int t)
+{
+	int	p1 = find(g, s);
+	int p2 = find(g, t);
+
+	if (g.vextices[p1].parent < g.vextices[p2].parent) {
+		g.vextices[p1].parent += g.vextices[p2].parent;
+		g.vextices[p2].parent = p1;
+	}
+	else {
+		g.vextices[p2].parent += g.vextices[p1].parent;
+		g.vextices[p1].parent = p2;
+	}
+}
+
+static void init_umset(graph &g)
+{
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].parent = -1;
+	}
+}
+
+
+static int cmp(const void *a, const void *b)
+{
+	arc_node	*m = (arc_node *)a;
+	arc_node	*n = (arc_node *)b;
+	return (m -> w - n -> w);
+}
+
+void _sort(arc_node	**parc, int n)
+{
+	for (int i = 0; i < n - 1; i ++)
+		for (int j = i + 1; j < n; j ++) {
+			if (parc[i] -> w > parc[j] -> w) {
+				arc_node	*tmp = parc[i];
+				parc[i] = parc[j];
+				parc[j] = tmp;
+			}
+		}
+}
+/* Return the weight of the MST */
+int kruscal(graph &g) 
+{
+	int	weight = 0;
+	if (g.kind != UDN && g.kind != UDG) {
+		cerr << "Graph input is not a UDN or UDG!!!" << endl;
+		return -1;
+	}
+	init_umset(g);
+
+	arc_node	**parc;
+	parc = (arc_node **)malloc(sizeof(arc_node *) * g.arc_num);
+	memset(parc, 0, sizeof(arc_node *) * g.arc_num);
+	int cnt = 0;
+
+	/* 
+	 * 找出无向网所有的边，放在parc中，由于是无向网，所以每边都有两个节点
+	 * 初始化每边的status为0（上面的memset的作用），在选边的时候，先找到对
+	 * 应的该边的另一节点，如果这边（另一边）的status为0，则入选该边，并置
+	 * status为1
+	 */
+	for (int i = 0; i < g.vex_num; i ++) {
+		arc_node	*tmp = g.vextices[i].first_arc;
+		while (tmp) {	// Attention: UDN
+				arc_node	*p = g.vextices[tmp -> adj_vex].first_arc;
+				while (p) {
+					if (p -> adj_vex == i)
+						break;
+					p = p -> next_arc;
+				}	// 找出该边对应的另一边
+				if (p -> status == 0) {	// 该边还没入选，选进并置status为1
+					parc[cnt ++] = tmp;
+					tmp -> add = i;
+					tmp -> status = 1;
+				}
+				tmp = tmp -> next_arc;
+		}
+	}
+
+	for (int i = 0; i < g.arc_num; i ++)
+		parc[i] -> status = 0;		// 重新置已选出的边的status为0，进行下面的操作
+	cnt = 0;
+	// sort the arcs with the non-reduced order
+	//	qsort(parc, g.arc_num, sizeof(arc_node *), cmp);
+	_sort(parc, g.arc_num);
+	
+	// Add arcs in weight order which connect two trees,
+	// and union the two trees
+	for(int j = 0; j < g.arc_num; j ++) {
+		int p1 = find(g, parc[j] -> adj_vex);
+		int	p2 = find(g, parc[j] -> add);	// The information of the other vertex
+	// Union the two trees
+		if (p1 != p2) {
+			cnt ++;
+			parc[j] -> status = 1;
+			merge(g, parc[j] -> adj_vex, parc[j] -> add);
+		}
+		if (cnt == g.vex_num - 1)
+			break;
+	}
+	for (int i = 0; i < g.arc_num; i ++) {
+		if (parc[i] -> status == 1)
+			printf("%d %d w = %d\n", parc[i] -> adj_vex, parc[i] -> add, parc[i] -> w);
+	}
+}
+
+/*
+ * Prim's Algorithm
+ */
+static void prim_init(graph &g, int s)
+{
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].dis = INF;
+		g.vextices[i].parent = NIL;
+		g.vextices[i].status = WHT;
+	}
+
+	int min = INF;
+	g.vextices[s].status = BLK;
+	arc_node	*tmp = g.vextices[s].first_arc;
+	int k;
+	while (tmp != NULL) {
+		g.vextices[tmp -> adj_vex].dis = tmp -> w;
+		g.vextices[tmp -> adj_vex].parent = s;
+		if (tmp -> w < min) {
+			min = tmp -> w;
+			k = tmp -> adj_vex;
+		}
+		tmp = tmp -> next_arc;
+	}
+	g.vextices[s].parent = k;
+	g.vextices[s].dis = min;
+}
+
+// Select the vertex whose dis is the smallest to the set S
+// and return the number of it, if all of the vertices are in
+// the set S, return -1
+static int prim_extract_min(graph &g)
+{
+	int min = INF;
+
+	int k = -1;
+	for (int i = 0; i < g.vex_num; i ++) {
+		if (g.vextices[i].status == WHT) {
+			if (g.vextices[i].dis < min) {
+				min = g.vextices[i].dis;
+				k = i;
+			}
+		}
+	}
+	if (k != -1) {
+		g.vextices[k].status = BLK;
+	}
+	return k;
+}
+
+static void prim_relax(graph &g, int s, int u, int w)
+{
+	if (g.vextices[u].dis > w) {
+		g.vextices[u].dis = w;
+		g.vextices[u].parent = s;
+	}
+}
+/*
+void prim_show(graph &g)
+{
+	for (int i = 0; i < g.vex_num; i ++)
+		printf("%d\n", g.vextices[i].status);
+	for (int i = 0; i < g.vex_num; i ++) {
+		if (g.vextices[i].status == BLK) {
+			cout << i << " " << g.vextices[i].parent 
+				 << " w = " << g.vextices[i].dis << endl;
+			if (g.vextices[g.vextices[i].parent].parent == i)
+				g.vextices[g.vextices[i].parent].status = WHT;
+		}
+	}
+	for (int i = 0; i < g.vex_num; i ++)
+		printf("after %d\n", g.vextices[i].status);
+}
+*/
+// I'm too lazy to cope with this problem,
+// so I use "grobal var" to solve it!!!
+// God Bless me!!!
+int	_node1[MAX];
+int	_node2[MAX];
+int	_w[MAX];
+void prim_show(graph &g) 
+{
+	for (int i = 0; i < g.vex_num - 1; i ++) {
+	cout << _node1[i] << " " << _node2[i] 
+		 << " w = " << _w[i] << endl;
+	}
+}
+
+int prim(graph &g, int s)
+{
+	prim_init(g, s);
+	int weight = 0;		// The weight of the MST
+
+	int cnt = 0;
+	while (1) {
+		int u = prim_extract_min(g);
+		if (u == -1)
+			break;
+		_node1[cnt] = u;
+		_node2[cnt] = g.vextices[u].parent;
+		_w[cnt ++] = g.vextices[u].dis;
+		weight += g.vextices[u].dis;
+		arc_node	*tmp = g.vextices[u].first_arc;
+		while (tmp) {
+			prim_relax(g, u, tmp -> adj_vex, tmp -> w);
+			tmp = tmp -> next_arc;
+		}
+	}
+	cout << "The weight of the MST: " << weight << endl;
+	return weight;
+}
+

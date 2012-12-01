@@ -20,7 +20,7 @@ static void get_occurence(int *occur, element_type *word, int *len, const char*f
 	int	i, n, k = 0;
 	
 	memset(tmp, 0, sizeof(tmp));
-	fp = fopen(filename, "r");
+	fp = fopen(filename, "rb");
 	while (!feof(fp)) {
 		n = fread(buf, sizeof(char), sizeof(buf), fp);
 		for (i = 0; i < n; i ++) {
@@ -80,8 +80,8 @@ static void zip(char *filename)
 	//		printf("%d\n", occur[i]);
 	root = creat_huff_tree(occur, nsyb, word);
 	encoding_table = huff_encoding(root, nsyb);
-	from = fopen(filename, "r");
-	to = fopen(zipped, "w");
+	from = fopen(filename, "rb");
+	to = fopen(zipped, "wb");
 
 	/*
 	 * 文件格式
