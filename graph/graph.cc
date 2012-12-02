@@ -3,7 +3,7 @@
 	> Author: Weiang
 	> Mail: weiang@mail.ustc.edu.cn 
 	> Created Time: 2012年11月26日 星期一 23时41分40秒
-    > Describition: 
+    > Describition: The elementary algorithms of Graph
  ************************************************************************/
 #include <iostream>
 #include <string>
@@ -20,37 +20,52 @@ static void udn_creat(graph &g);
 static void udg_creat(graph &g);
 static void dg_creat(graph &g);
 
-
-/* 
- * 创建无向图 
+/*
+ * UDG	undirected graph
+ * DG	directed graph
+ * UDN	undirecte net
+ * DN	directed net
+ * DAG	directed acyclic graph
  */
+
+/**********************************
+ * Elementary operations on graph *
+ * ********************************/
+
+/* Creat UDG */
 static void udg_creat(graph &g)
 {
-	int		i, j;
-	int		vi, vj, w;
-	arc_node	*ptmp;
-
 	cout << "Enter vertices and arc number: " << endl;
-	scanf("%d%d", &g.vex_num, &g.arc_num);
-
-	// Initl=ilize vertices information
-	for (i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].info = i + 1;
+	cin >> g.vex_num >> g.arc_num;
+	cout << "Enter vertices' information" << endl;
+	// Initilize vertices information
+	for (int i = 0; i < g.vex_num; i ++) {
+		cin >> g.vextices[i].info;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
 	
 	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	// Creat arc from the information inputed
-	for (i = 0; i < g.arc_num; i ++) {
-		cin >> vi >> vj >> w;
-		vi --;
-		vj --;
-		ptmp = new arc_node;
+	for (int i = 0; i < g.arc_num; i ++) {
+		elem_type pi, pj;
+		int	w;
+		cin >> pi >> pj >> w;
+		int vi, vj;
+		for (int k = 0; k < g.vex_num; k ++) {
+			if (pi == g.vextices[k].info)
+				vi = k;
+			if (pj == g.vextices[k].info)
+				vj = k;
+		}
+	
+	// Insert arc (vi, vj) into vi's out-adj list
+		arc_node	*ptmp = new arc_node;
 		ptmp -> adj_vex = vj;
 		ptmp -> w = w;
 		ptmp -> next_arc = g.vextices[vi].first_arc;
 		g.vextices[vi].first_arc = ptmp;
+	// Insert arc (vi, vj) into vj's out-adj list
 		ptmp = new arc_node;
 		ptmp -> adj_vex = vi;
 		ptmp -> w = w;
@@ -59,34 +74,38 @@ static void udg_creat(graph &g)
 	}
 }
 
-/* 
- * 创建有向图 
- */
+/* Creat DG */
 static void dg_creat(graph &g)
 {
-	int		vi, vj, w;
 	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
-
-	// 初始化顶点节点
+	cout << "Enter vertices' information: " << endl;
+	// Initilize vertices information
 	for (int i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].info = i + 1;
+		cin >> g.vextices[i].info;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
 	
-	// 获取弧信息
+	// Creat arcs from the information input
 	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
-		cin >> vi >> vj >> w;
-		vi --;
-		vj --;
+		elem_type	pi, pj;
+		int	w;
+		cin >> pi >> pj >> w;
+		for (int k = 0; k < g.vex_num; k ++) {
+			if (g.vextices[k].info == pi)
+				vi = k;
+			if (g.vextices[k].info == pj)
+				vj = k;
+		}
+	// Insert arc <vi, vj> into vi's out-adj list
 		arc_node	*tmp = new arc_node;
 		tmp -> adj_vex = vj;
 		tmp -> w = w;
 		tmp -> next_arc = g.vextices[vi].first_arc;
 		g.vextices[vi].first_arc = tmp;
-	
+	// Insert arc <vi, vj> into vj's in-adj list
 		tmp = new arc_node;
 		tmp -> adj_vex = vi;
 		tmp -> w = w;
@@ -95,20 +114,18 @@ static void dg_creat(graph &g)
 	}
 }
 
-/*
- * 创建有向网
- */
+/* Creat DN */
 static void dn_creat(graph &g)
 {
 	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
-
+	cout << "Enter vertices information: " << endl;
 	for (int i = 0; i < g.vex_num; i ++) {
 		g.vextices[i].info = i + 1;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
-
+	
 	cout << "Enter vertices relation:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
 		int	rlt[3];
@@ -132,9 +149,7 @@ static void dn_creat(graph &g)
 	}
 }
 
-/* 
- * 创建无向网
- */
+/* Creat UDN */
 static void udn_creat(graph &g)
 {
 	cout << "Enter vertices and arc number: " << endl;
@@ -145,7 +160,7 @@ static void udn_creat(graph &g)
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
-	cout << "Enter vertices relations:(vj vj weight) " << endl;
+	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
 		int vi, vj, w;
 		cin >> vi >> vj >> w;
@@ -166,115 +181,178 @@ static void udn_creat(graph &g)
 }
 
 	
-// 构建图
-void g_creat(graph &g)
+/* 
+ * Creat graph with graph kind 
+ */
+void graph_creat(graph &g)
 {
 	cout << "Enter Graph kind: " << endl;
 	scanf("%d", (int *)&(g.kind));
 //	cout << g.kind << endl;
 	switch (g.kind) {
-		case	DG:	
+		case	DG:				// 0 
 			dg_creat(g);
 			break;
-		case	DN:	
+		case	DN:				// 1
 			dn_creat(g);
 			break;
-		case	UDG:
+		case	UDG:			// 2
 			udg_creat(g);
 			break;
-		case	UDN:
+		case	UDN:			// 3
 			udn_creat(g);
 			break;
 	}
 }
 
-/* 广度优先遍历 */
-void g_bfs(graph &g, int vex)
+/* 
+ * Delete graph 
+ */
+void graph_delete(graph &g)
 {
-	int		leave;
-	arc_node	*tmp;
-	int		rear, front;
-	int		queue[MAX];
+	int	i;
 
-	vex --;
+	for (i = 0; i < g.vex_num; i ++) {
+		arc_node *tmp = g.vextices[i].first_arc;
+		while (tmp) {
+			arc_node	*p = tmp;
+			tmp = tmp -> next_arc;
+			delete p;
+		}
+		g.vextices[i].in_arc;
+		while (tmp) {
+			arc_node	*p = tmp;
+			tmp = tmp -> next_arc;
+			delete p;
+		}
+		g.vextices[i].first_arc = NULL;
+		g.vextices[i].in_arc = NULL;
+	}
+	return;
+}
+
+/* 
+* Show graph
+*/
+void graph_show(graph g)
+{
+	 for (int i = 0; i < g.vex_num; i ++) {
+		vex_node	*tmp = &(g.vextices[i]);
+		cout << "Node " << tmp -> info;
+		if (g.vextices[i].in_node == NULL)
+			cout << ":(Edge list) ";
+		else 
+			cout << ":(Out-adj list) ";
+		arc_node	*k = tmp -> first_arc;
+		int o_d = 0;
+		while (k != NULL) {
+			cout << g.vextices[k -> adj_vex].info << "(w="
+				 << k -> w << ") ";
+			o_d ++;
+			k = k -> next_arc;
+	   }
+	   k = tmp -> in_arc;
+	   if (k) {
+		   cout << "Out degree = " << o_d << endl;
+		   int i_d = 0;
+		   cout << "\t(In-adj list) ";
+		   while (k != NULL) {
+			   cout << g.vextices[k -> adj_vex].info << "(w="
+					<< k -> w << ") ";
+			   i_d ++;
+			   k = k -> next_arc;
+			}
+			cout << "In degree = " << i_o << endl;
+	   }
+	   else 
+		   cout << "Degree = " << o_d << endl;
+	 }
+}
+
+
+/****************************
+ * Graph's Traverse Problem *
+ ****************************/
+
+/* 
+ * DFS 
+ */
+static int	t;	// Record the time of the DFS process
+static void i_dfs(graph &g, int s, (void *)visit(elem_type &))
+{
+	t ++;
+	
+	g.vextices[s].dis = t;		// Record the vertex's discovered time
+	g.vextices[s].status = GRAY;
+	arc_node *tmp = g.vextices[s].first_arc;
+	while (tmp) {
+		int k = tmp -> adj_vex;
+		if (g.vextices[k].status == WHT) {
+			g.vextices[k].parent = s;
+	//		g.vextices[k].dis = g.vextices[s].dis + 1;
+			i_dfs(g, k, visit);
+		}
+		tmp = tmp -> next_arc;
+	}
+	t ++;
+//	cout << s << " " << t << endl;
+	g.vextices[s].f = t;
+	g.vextices[s].status = BLK;
+}
+
+void graph_dfs(graph &g) 
+{
+	t = 0;
+	// Initilization
+	for (int i = 0; i < g.vex_num; i ++) {
+			g.vextices[i].parent = NIL;
+			g.vextices[i].dis = INF;
+			g.vextices[i].f = INF;
+			g.vextices[i].status = WHT;
+	}
+	for (int i = 0; i < g.vex_num; i ++) {
+//		cout << "Node " << i << " status: " 
+//			 << g.vextices[i].status << endl;
+		if (g.vextices[i].status == WHT) {
+			i_dfs(g, i);
+		}
+	}
+}
+
+/*
+ * BFS
+ */
+void graph_bfs(graph &g, int s)
+{
+	// Initilization
+	for (int i = 0; i < g.vex_num; i ++) {
+		g.vextices[i].parent = NIL;
+		g.vextices[i].dis = INF;
+		g.vextices[i].status = WHT;
+	}
+
+	g.vextices[s].parent = NIL;
+	g.vextices[s].dis = 0;
+	g.vextices[s].status = GRAY;
+	int	queue[MAX];
+	int	rear, front;
+
 	rear = front = 0;
-	g.vextices[vex].dis = 0;
-	g.vextices[vex].parent= NIL;
-	g.vextices[vex].visited = 1;
-	printf("%d ", g.vextices[vex].info);
-	queue[rear ++] = vex;
-	while (front != rear) {
-		leave = queue[front ++];
-		tmp = g.vextices[leave].first_arc;
-		while (tmp != NULL) {
-			if (!g.vextices[tmp -> adj_vex].visited) {
-				printf("%d ", g.vextices[tmp -> adj_vex].info);
-				g.vextices[tmp -> adj_vex].visited = 1;
-				g.vextices[tmp -> adj_vex].dis = g.vextices[leave].dis + 1;
-				g.vextices[tmp -> adj_vex].parent = leave;
+	queue[rear ++] = s;
+
+	while (rear != front) {
+		int	u = queue[front ++];
+		arc_node	*tmp = g.vextices[u].first_arc;
+		while (tmp) {
+			if (g.vextices[tmp -> adj_vex].status == WHT) {
+				g.vextices[tmp -> adj_vex].status = GRAY;
+				g.vextices[tmp -> adj_vex].parent = u;
+				g.vextices[tmp -> adj_vex].dis = g.vextices[u].dis + 1;
 				queue[rear ++] = tmp -> adj_vex;
 			}
-			tmp = tmp -> next_arc;
-		}
-	}
-	printf("\n");
-}
-
-// 打印从s到t的一条简单路径
-static int flag = 0;		// 标志是否已找到一条简单路径
-void print_path(graph g, int s, int t)
-{
-	if (s == t) 
-		cout << g.vextices[s].info << " ";
-	else {
-		if (g.vextices[t].parent == NIL) { 
-			cerr << "No path found!" << endl;
-			flag = 1;
-		}
-		else {
-			print_path(g, s, g.vextices[t].parent);
-			if (flag == 0)
-				cout << g.vextices[t].info <<  " ";
-		}
-	}
-}
-
-// 深度优先搜索
-static int	time_ = 0;	// 事件发生时间
-int		f[MAX];
-static void dfs(graph g, int s)
-{
-	time_ ++;
-	g.vextices[s].visited = 1;
-	g.vextices[s].dis = time_;
-	arc_node	*tmp = g.vextices[s].first_arc;
-	while (tmp) {
-		if (!g.vextices[tmp -> adj_vex].visited) {
-			g.vextices[tmp -> adj_vex].parent = s;
-			dfs(g, tmp -> adj_vex);
-		}
-	}
-	time_ ++;
-	f[s] = time_;
-}
-
-void g_dfs(graph &g)
-{
-	time_ = 0;
-	memset(f, 0, sizeof(f));
-	// 初始化顶点节点
-	for (int i = 0; i < g.vex_num; i ++ ) {
-		g.vextices[i].visited = 0;
-		g.vextices[i].parent = NIL;
-		g.vextices[i].dis = 0;
+			tmp = tmp -> next_arc; } g.vextices[s].status = BLK;
 	}
 
-	for (int i = 0; i < g.vex_num; i ++) {
-		if (!g.vextices[i].visited) {
-			dfs(g, i);
-		}
-	}
-}
 
 /* 
  * Topological Sorting 
@@ -346,170 +424,8 @@ int print_topsort(graph g)
 	return 0;
 }
 
-/* 删除图 */
-void g_delete(graph g)
-{
-	int	i;
 
-	for (i = 0; i < g.vex_num; i ++) {
-		arc_node *tmp = g.vextices[i].first_arc;
-		while (tmp) {
-			arc_node	*p = tmp;
-			tmp = tmp -> next_arc;
-			delete p;
-		}
-		g.vextices[i].in_arc;
-		while (tmp) {
-			arc_node	*p = tmp;
-			tmp = tmp -> next_arc;
-			delete p;
-		}
-		g.vextices[i].first_arc = NULL;
-		g.vextices[i].in_arc = NULL;
-	}
-	return;
-}
 
-/* 
- * The improved version of DFS 
- */
-static int	t;	// Record the time of the DFS process
-static void i_dfs(graph &g, int s)
-{
-	t ++;
-//	cout << s << " " << t << endl;
-	g.vextices[s].dis = t;
-	g.vextices[s].status = GRAY;
-//	cout <<  g.vextices[s].status << endl;
-	arc_node *tmp = g.vextices[s].first_arc;
-	while (tmp) {
-		int k = tmp -> adj_vex;
-		if (g.vextices[k].status == WHT) {
-			g.vextices[k].parent = s;
-	//		g.vextices[k].dis = g.vextices[s].dis + 1;
-			i_dfs(g, k);
-		}
-		tmp = tmp -> next_arc;
-	}
-	t ++;
-//	cout << s << " " << t << endl;
-	g.vextices[s].f = t;
-	g.vextices[s].status = BLK;
-}
-
-void graph_dfs(graph &g) 
-{
-	t = 0;
-	// Initilization
-	for (int i = 0; i < g.vex_num; i ++) {
-			g.vextices[i].parent = NIL;
-			g.vextices[i].dis = INF;
-			g.vextices[i].f = INF;
-			g.vextices[i].status = WHT;
-	}
-	for (int i = 0; i < g.vex_num; i ++) {
-//		cout << "Node " << i << " status: " 
-//			 << g.vextices[i].status << endl;
-		if (g.vextices[i].status == WHT) {
-			i_dfs(g, i);
-		}
-	}
-}
-
-/* 
- * Improved version of print_path
- */
-void graph_show(graph g, int choice)
-{
-
-	if (choice == 0) {
-		for (int i = 0; i < g.vex_num; i ++) {
-			vex_node	*tmp = &(g.vextices[i]);
-			cout << "Node " << tmp -> info
-				 << ":(out adj_vex) ";
-			arc_node	*k = tmp -> first_arc;
-			while (k != NULL) {
-				cout << g.vextices[k -> adj_vex].info << "(w="
-					 << k -> w << ") ";
-				k = k -> next_arc;
-			}
-			cout << endl;
-			k = tmp -> in_arc;
-			if (k) {
-				cout << "\t(in adj_vex) ";
-				while (k != NULL) {
-					cout << g.vextices[k -> adj_vex].info << "(w="
-						 << k -> w << ") ";
-					k = k -> next_arc;
-				}
-			}
-			cout << endl;
-		}
-	}
-	// Print DFS tree
-	if (choice == 1) {
-		for (int i = 0; i < g.vex_num; i ++) {
-			vex_node	*tmp = &(g.vextices[i]);
-			int t;
-			t = i;
-			cout << "Node " << tmp -> info << ": discovered time "
-				 << tmp -> dis << " finished time " << tmp -> f << endl;
-			cout << "Path: ";
-			while (t != NIL) {
-				cout << g.vextices[t].info << "-->";
-				t = g.vextices[t].parent;
-			}
-			cout << "NIL" << endl;
-		}
-	}
-	// Print BFS tree
-	if (choice == 2) {
-		for (int i = 0; i < g.vex_num; i ++) {
-			vex_node	*tmp = &(g.vextices[i]);
-			int t = i;
-			cout << "Node " << tmp -> info << ": distace " 
-				 << tmp -> dis << endl;
-			while (t != NIL) {
-				cout << g.vextices[t].info << "-->";
-				t = g.vextices[t].parent;
-			}
-			cout << "NIL" << endl;
-		}
-	}
-}
-/*
- * Impooved version of BFS
- */
-void graph_bfs(graph &g, int s)
-{
-	// Initilization
-	for (int i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].parent = NIL;
-		g.vextices[i].dis = INF;
-		g.vextices[i].status = WHT;
-	}
-
-	g.vextices[s].parent = NIL;
-	g.vextices[s].dis = 0;
-	g.vextices[s].status = GRAY;
-	int	queue[MAX];
-	int	rear, front;
-
-	rear = front = 0;
-	queue[rear ++] = s;
-
-	while (rear != front) {
-		int	u = queue[front ++];
-		arc_node	*tmp = g.vextices[u].first_arc;
-		while (tmp) {
-			if (g.vextices[tmp -> adj_vex].status == WHT) {
-				g.vextices[tmp -> adj_vex].status = GRAY;
-				g.vextices[tmp -> adj_vex].parent = u;
-				g.vextices[tmp -> adj_vex].dis = g.vextices[u].dis + 1;
-				queue[rear ++] = tmp -> adj_vex;
-			}
-			tmp = tmp -> next_arc; } g.vextices[s].status = BLK;
-	}
 }
 
 
@@ -769,17 +685,17 @@ int kruscal(graph &g)
 						break;
 					p = p -> next_arc;
 				}	// 找出该边对应的另一边
-				if (p -> status == 0) {	// 该边还没入选，选进并置status为1
+				if (p -> status == WHT) {	// 该边还没入选，选进并置status为BLK
 					parc[cnt ++] = tmp;
 					tmp -> add = i;
-					tmp -> status = 1;
+					tmp -> status = BLK;
 				}
 				tmp = tmp -> next_arc;
 		}
 	}
 
 	for (int i = 0; i < g.arc_num; i ++)
-		parc[i] -> status = 0;		// 重新置已选出的边的status为0，进行下面的操作
+		parc[i] -> status = WHT;		// 重新置已选出的边的status为WHT，进行下面的操作
 	cnt = 0;
 	// sort the arcs with the non-reduced order
 	//	qsort(parc, g.arc_num, sizeof(arc_node *), cmp);
@@ -793,14 +709,14 @@ int kruscal(graph &g)
 	// Union the two trees
 		if (p1 != p2) {
 			cnt ++;
-			parc[j] -> status = 1;
+			parc[j] -> status = BLK;
 			merge(g, parc[j] -> adj_vex, parc[j] -> add);
 		}
 		if (cnt == g.vex_num - 1)
 			break;
 	}
 	for (int i = 0; i < g.arc_num; i ++) {
-		if (parc[i] -> status == 1)
+		if (parc[i] -> status == BLK)
 			printf("%d %d w = %d\n", parc[i] -> adj_vex, parc[i] -> add, parc[i] -> w);
 	}
 }
