@@ -14,31 +14,25 @@
 
 using namespace std;
 
+void visit(elem_type & a)
+{
+	printf("%c ", a);
+}
+
 int main(void)
 {
 	graph	g;
-	int		*p;
+	int *q;
+	void (*p)(elem_type &);
+	p = visit;
+	int choice;
 
-	g_creat(g);
- 	graph_show(g, 0);
-//	dij(g, 0);
-/*	for (int i = 0; i < g.vex_num; i ++) 
-		printf("%d\n", g.vextices[i].parent);
-*/	
-//	dij_show(g, 0);
-//	sp_topsort(g, 0);
-//	sp_show(g, 0);
-//	cout << is_acyclic(g) << endl;
-//	topsort(g, &p);
-//	print_topsort(g);
-//	graph_dfs(g);
-//	graph_show(g, 0);
-//	graph_show(g, 1);
-//	graph_bfs(g, 0);
-//	graph_show(g, 2);
-	kruscal(g);
-	cout << "Prim Alg" << endl;
-	prim(g, 0);
-	prim_show(g);
+	graph_creat(g);
+ 	graph_show(g);
+	cout << "Please enter the source vertices: " << endl;
+	scanf("%d ", &choice);
+	printf("%d\n", choice);
+	sp_dij(g, choice);
+	sp_show(g, choice);
 	return 0;
 }

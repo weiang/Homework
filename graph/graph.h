@@ -5,8 +5,10 @@
 #define NIL	1000	
 #define INF	100000
 
+#define	EQ(A, B)	((A) == (B))
+#define PRT(A)		printf("%c ", A)
 /* The vertices' type */
-typedef int	elem_type;
+typedef char	elem_type;
 
 /*******************
  * Data Structures *
@@ -17,6 +19,15 @@ typedef enum {DG, DN, UDG, UDN} graph_kind;
 
 /* 顶点的状态 */
 typedef enum {WHT, GRAY, BLK} color;	// Record the status of the vertexs and arcs
+
+/* 邻接表的弧节点 */
+typedef struct node {
+	int		adj_vex;
+	int		w;				// The weight of the arc
+	struct node	*next_arc;
+	int		add;			// Reserved memory(for unpredicted use)
+	color		status;
+} arc_node;
 
 /* 顶节点 */	
 typedef struct {
@@ -31,15 +42,6 @@ typedef struct {
 	int		f;				// 访问该节点的结束时间（status = BLK）
 	int		w;
 } vex_node;
-
-/* 邻接表的弧节点 */
-typedef struct node {
-	int		adj_vex;
-	int		w;				// The weight of the arc
-	struct node	*next_arc;
-	int		add;			// Reserved memory(for unpredicted use)
-	color		status;
-} arc_node;
 
 /* 图 */
 typedef struct graph {
@@ -56,17 +58,19 @@ typedef struct graph {
 /* Elementary operations on graph */
 extern void graph_creat(graph &);
 extern void g_delete(graph &);
-extern void graph_show(graph, int);
+extern void graph_show(graph);
 
 /* Graph Traverse */
-extern void graph_dfs(graph &, int, (void *)(elem_type &));
-extern void graph_bfs(graph &, int, (void *)(elem_type &));
-extern void print_path(graph, int, int);
+extern void graph_dfs(graph &, int, void (*)(elem_type &));
+extern void dfs_show(graph);
+extern void graph_bfs(graph &, int, void (*)(elem_type &));
+extern void bfs_show(graph &, int); 
+extern void show_path(graph, int, int);
 
 /* Topological sorting */
-extern int  topsort(graph, int **);
+extern int  topsort(graph, int * &);
 extern int	is_acyclic(graph);
-extern int  topsort_show(graph, (void *)(elem_type &));
+extern int  topsort_show(graph);
 
 /* Shortest path */
 extern void sp_dij(graph &, int);

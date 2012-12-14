@@ -53,9 +53,9 @@ static void udg_creat(graph &g)
 		cin >> pi >> pj >> w;
 		int vi, vj;
 		for (int k = 0; k < g.vex_num; k ++) {
-			if (pi == g.vextices[k].info)
+			if (EQ(pi, g.vextices[k].info))
 				vi = k;
-			if (pj == g.vextices[k].info)
+			if (EQ(pj, g.vextices[k].info))
 				vj = k;
 		}
 	
@@ -91,12 +91,12 @@ static void dg_creat(graph &g)
 	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
 		elem_type	pi, pj;
-		int	w;
+		int	w, vi, vj;
 		cin >> pi >> pj >> w;
 		for (int k = 0; k < g.vex_num; k ++) {
-			if (g.vextices[k].info == pi)
+			if (EQ(g.vextices[k].info, pi))
 				vi = k;
-			if (g.vextices[k].info == pj)
+			if (EQ(g.vextices[k].info, pj))
 				vj = k;
 		}
 	// Insert arc <vi, vj> into vi's out-adj list
@@ -119,33 +119,38 @@ static void dn_creat(graph &g)
 {
 	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
-	cout << "Enter vertices information: " << endl;
+	cout << "Enter vertices' information: " << endl;
 	for (int i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].info = i + 1;
+		cin >> g.vextices[i].info;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
 	
 	cout << "Enter vertices relation:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
-		int	rlt[3];
-		cin >> rlt[0] >> rlt[1] >> rlt[2];
-		rlt[0] --;
-		rlt[1] --;
-	
+		elem_type	pi, pj;
+		int w, vi, vj;
+		cin >> pi >> pj  >> w;
+		for (int j = 0; j < g.vex_num; j ++) {
+			if (EQ(g.vextices[j].info, pi))
+				vi = j;
+			if ((g.vextices[j].info, pj))
+				vj = j;
+		}
+
 		// Insert <rlt[0], rlt[1]> into rlt[0]'s out-adj list
 		arc_node	*tmp = new arc_node;
-		tmp -> adj_vex = rlt[1];
-		tmp -> w = rlt[2];
-		tmp -> next_arc = g.vextices[rlt[0]].first_arc;
-		g.vextices[rlt[0]].first_arc = tmp;
+		tmp -> adj_vex = vj;
+		tmp -> w = w;
+		tmp -> next_arc = g.vextices[vi].first_arc;
+		g.vextices[vi].first_arc = tmp;
 		
 		// Insert <rlt[0], rlt[1]> into rlt[1]'s in-adj list
 		tmp = new arc_node;
-		tmp -> adj_vex = rlt[0];
-		tmp -> w = rlt[2];
-		tmp -> next_arc = g.vextices[rlt[1]].in_arc;
-		g.vextices[rlt[1]].in_arc = tmp;
+		tmp -> adj_vex = vi;
+		tmp -> w = w;
+		tmp -> next_arc = g.vextices[vj].in_arc;
+		g.vextices[vj].in_arc = tmp;
 	}
 }
 
@@ -155,17 +160,25 @@ static void udn_creat(graph &g)
 	cout << "Enter vertices and arc number: " << endl;
 	cin >> g.vex_num >> g.arc_num;
 
+	cout << "Enter verices' information: " << endl;
 	for (int i = 0; i < g.vex_num; i ++) {
-		g.vextices[i].info = i + 1;
+		cin >> g.vextices[i].info;
 		g.vextices[i].first_arc = NULL;
 		g.vextices[i].in_arc = NULL;
 	}
 	cout << "Enter vertices relations:(vi vj weight) " << endl;
 	for (int i = 0; i < g.arc_num; i ++) {
-		int vi, vj, w;
-		cin >> vi >> vj >> w;
-		vi --;
-		vj --;
+		elem_type	pi, pj;
+		int	w;
+		cin >> pi >> pj >> w;
+		int vi, vj;
+		for (int j = 0; j < g.vex_num; j ++) {
+			if (EQ(g.vextices[j].info , pi))
+				vi = j;
+			if (EQ(g.vextices[j].info, pj))
+				vj = j;
+		}
+
 		arc_node	*tmp = new arc_node;
 		tmp -> adj_vex = vj;
 		tmp -> w = w;
@@ -210,16 +223,14 @@ void graph_creat(graph &g)
  */
 void graph_delete(graph &g)
 {
-	int	i;
-
-	for (i = 0; i < g.vex_num; i ++) {
+	for (int i = 0; i < g.vex_num; i ++) {
 		arc_node *tmp = g.vextices[i].first_arc;
 		while (tmp) {
 			arc_node	*p = tmp;
 			tmp = tmp -> next_arc;
 			delete p;
 		}
-		g.vextices[i].in_arc;
+		tmp = g.vextices[i].in_arc;
 		while (tmp) {
 			arc_node	*p = tmp;
 			tmp = tmp -> next_arc;
@@ -238,16 +249,17 @@ void graph_show(graph g)
 {
 	 for (int i = 0; i < g.vex_num; i ++) {
 		vex_node	*tmp = &(g.vextices[i]);
-		cout << "Node " << tmp -> info;
-		if (g.vextices[i].in_node == NULL)
+		cout << "Node ";
+		PRT(g.vextices[i].info);
+		if (g.vextices[i].in_arc == NULL)
 			cout << ":(Edge list) ";
 		else 
 			cout << ":(Out-adj list) ";
 		arc_node	*k = tmp -> first_arc;
 		int o_d = 0;
 		while (k != NULL) {
-			cout << g.vextices[k -> adj_vex].info << "(w="
-				 << k -> w << ") ";
+			PRT(g.vextices[k -> adj_vex].info);
+			cout << "(w = " << k -> w << ") ";
 			o_d ++;
 			k = k -> next_arc;
 	   }
@@ -257,12 +269,12 @@ void graph_show(graph g)
 		   int i_d = 0;
 		   cout << "\t(In-adj list) ";
 		   while (k != NULL) {
-			   cout << g.vextices[k -> adj_vex].info << "(w="
-					<< k -> w << ") ";
+			   PRT(g.vextices[k -> adj_vex].info);
+			   cout << "(w = " << k -> w << ") ";
 			   i_d ++;
 			   k = k -> next_arc;
 			}
-			cout << "In degree = " << i_o << endl;
+			cout << "In degree = " << i_d << endl;
 	   }
 	   else 
 		   cout << "Degree = " << o_d << endl;
@@ -278,29 +290,28 @@ void graph_show(graph g)
  * DFS 
  */
 static int	t;	// Record the time of the DFS process
-static void i_dfs(graph &g, int s, (void *)visit(elem_type &))
+static void i_dfs(graph &g, int s, void (*visit)(elem_type &))
 {
 	t ++;
 	
 	g.vextices[s].dis = t;		// Record the vertex's discovered time
 	g.vextices[s].status = GRAY;
+	visit(g.vextices[s].info);
 	arc_node *tmp = g.vextices[s].first_arc;
 	while (tmp) {
 		int k = tmp -> adj_vex;
 		if (g.vextices[k].status == WHT) {
 			g.vextices[k].parent = s;
-	//		g.vextices[k].dis = g.vextices[s].dis + 1;
 			i_dfs(g, k, visit);
 		}
 		tmp = tmp -> next_arc;
 	}
 	t ++;
-//	cout << s << " " << t << endl;
 	g.vextices[s].f = t;
 	g.vextices[s].status = BLK;
 }
 
-void graph_dfs(graph &g) 
+void graph_dfs(graph &g, int s, void (*visit)(elem_type &)) 
 {
 	t = 0;
 	// Initilization
@@ -310,19 +321,42 @@ void graph_dfs(graph &g)
 			g.vextices[i].f = INF;
 			g.vextices[i].status = WHT;
 	}
-	for (int i = 0; i < g.vex_num; i ++) {
-//		cout << "Node " << i << " status: " 
-//			 << g.vextices[i].status << endl;
-		if (g.vextices[i].status == WHT) {
-			i_dfs(g, i);
+	if (s < 0)
+		for (int i = 0; i < g.vex_num; i ++) {
+			if (g.vextices[i].status == WHT) {
+				i_dfs(g, i, visit);
+				cout << endl;
+			}
 		}
+	else {
+		i_dfs(g, s, visit);
+		cout << endl;
 	}
 }
 
+/* Show the result of DFS */
+void dfs_show(graph g)
+{
+	for (int i = 0; i < g.vex_num; i ++) {
+		cout << "Node ";
+		PRT(g.vextices[i].info);
+		int tmp;
+		cout << "path: ";
+		tmp = i;
+		while (tmp != NIL) {
+			PRT(g.vextices[tmp].info);
+			cout << "<-- ";
+			tmp = g.vextices[tmp].parent;
+		}
+		cout << "NIL (discovered time = " << g.vextices[i].dis 
+			 << " finished time = " << g.vextices[i].f
+			 << ")" << endl;
+	}
+}
 /*
  * BFS
  */
-void graph_bfs(graph &g, int s)
+void graph_bfs(graph &g, int s, void (*visit)(elem_type &))
 {
 	// Initilization
 	for (int i = 0; i < g.vex_num; i ++) {
@@ -343,6 +377,7 @@ void graph_bfs(graph &g, int s)
 	while (rear != front) {
 		int	u = queue[front ++];
 		arc_node	*tmp = g.vextices[u].first_arc;
+		visit(g.vextices[u].info);
 		while (tmp) {
 			if (g.vextices[tmp -> adj_vex].status == WHT) {
 				g.vextices[tmp -> adj_vex].status = GRAY;
@@ -350,37 +385,68 @@ void graph_bfs(graph &g, int s)
 				g.vextices[tmp -> adj_vex].dis = g.vextices[u].dis + 1;
 				queue[rear ++] = tmp -> adj_vex;
 			}
-			tmp = tmp -> next_arc; } g.vextices[s].status = BLK;
+			tmp = tmp -> next_arc; 
+		}
+		g.vextices[s].status = BLK;
 	}
+}
 
+/* Show the result of BFS */
+void show_path(graph g, int s, int v)
+{
+	if (s == v)
+		PRT(g.vextices[s].info);
+	else {
+		if (g.vextices[v].parent == NIL)
+			cerr << "No path!!!" << endl;
+		else {
+			show_path(g, s, g.vextices[v].parent);
+			cout << "--> ";
+			PRT(g.vextices[v].info);
+		}
+	}
+}
+
+void bfs_show(graph &g, int s)
+{
+		for (int i = 0; i < g.vex_num; i ++) {
+			cout << "Node ";	
+			PRT(g.vextices[i].info);
+			if (s == i)
+				cout << ": Root!!!" << endl;
+			else {
+				cout << ":(Path) ";
+				show_path(g, s, i);
+				cout << "dis = " << g.vextices[i].dis << endl;
+			}
+		}
+}
 
 /* 
  * Topological Sorting 
  */
 // Return the pointer to the sorted vertices if normal
 // Return NULL if the graph is not a DGA
-int topsort(graph g, int **t)
+int topsort(graph g, int * &t)
 {
 	if (g.kind != DN && g.kind != DG) {
-		cerr << "Error: Graph inputed is not allowed!" << endl;
-		return -1;
+		cerr << "Error: Graph inputed is not allowed!" << endl; return -1;
 	}
-	int	*st = new int[g.vex_num];
-	*t = st;
-	memset(st, 0, sizeof(st) * g.vex_num);
+	t = new int[g.vex_num];
+	memset(t, 0, sizeof(t) * g.vex_num);
 	int		degree[MAX];
 	memset(degree, 0, sizeof(degree));
-	int	top = -1;	// 栈顶指针
+	int	top = -1;	//	The top the stack
 
-	int	cnt = 0;	// 已经拓扑排序过的顶数
+	int	cnt = 0;	// The number of vertices that has been toplogical sorted
 	for (int i = 0; i < g.vex_num; i ++) {
 		arc_node	*tmp;
 		tmp = g.vextices[i].in_arc;
 		while (tmp != NULL) {
 			degree[i] ++;
 			tmp = tmp -> next_arc;
-		}			// 获取各顶的入度
-		if (degree[i] == 0) {	// 入度为0的顶入栈
+		}			// Get the in degree of each vertex
+		if (degree[i] == 0) {	// Push the vertices whose in degree is 0
 			degree[i] = top;
 			top = i;
 		}
@@ -389,44 +455,43 @@ int topsort(graph g, int **t)
 	while (top != -1) {
 		int		i;
 		i = top;
-		top = degree[top];		// 栈顶指针出栈
-		st[cnt ++] = i;
+		top = degree[top];		// Pop the top stack pointer
+		t[cnt ++] = i;
 		arc_node	*tmp = g.vextices[i].first_arc;
 		while (tmp != NULL) {
 			if (-- degree[tmp -> adj_vex] == 0) {
 				degree[tmp -> adj_vex] = top;
 				top = tmp -> adj_vex;
-			}					//	入度为0的顶入栈
+			}					//	Pusht the vertices whose in degree is 0
 			tmp = tmp -> next_arc;
 		}
 	}
 	if (cnt != g.vex_num)
-		return -1;
-	return 0;
+		return -1;				// The graph has cycle
+	return 0;					// Topological sort succeed
 }
 
 int	is_acyclic(graph g)
 {
-	int	*p;
-	return topsort(g, &p);
+	int *p;
+	return topsort(g, p);
 }
 
-int print_topsort(graph g)
+
+int topsort_show(graph g)
 {
 	int	*p;
-	if (topsort(g, &p) == -1) {
+	if (topsort(g, p) == -1) {
 		cerr << "Network has a cycle." << endl;
 		return -1;
 	}
 	for (int i = 0; i < g.vex_num; i ++)
-			cout << p[i] << " ";
+			// printf("%c ", (char)g.vextices[i].info);
+			PRT(g.vextices[i].info);
 	cout << endl;
 	return 0;
 }
 
-
-
-}
 
 
 /****************************
@@ -509,13 +574,13 @@ void sp_dij(graph &g, int s)
 static void result_show(graph g, int s, int v)
 {
 	if (s == v)
-		cout << s << " ";
+		PRT(g.vextices[s].info);
 	else {
 		if (g.vextices[v].parent == NIL) 
 			cout << "No path!!!" << endl;
 		else {
 			result_show(g, s, g.vextices[v].parent);
-			cout << v << " ";
+			PRT(g.vextices[v].info);
 		}
 	}
 }
@@ -524,9 +589,11 @@ void sp_show(graph g, int s)
 {
 	for (int i = 0; i < g.vex_num; i ++) {
 		if (i != s) {
-			cout << "The shortest path from node " << s 
-				 << " to " << i << " :(weight = " << g.vextices[i].dis
-				 << ") ";
+			cout << "The shortest path from node ";
+			PRT(g.vextices[s].info);
+			cout << " to " ;
+			PRT(g.vextices[i].info);
+			cout << " :(weight = " << g.vextices[i].dis	<< ") ";
 			result_show(g, s, i);
 			cout << endl;
 		}
@@ -569,14 +636,14 @@ int sp_bf(graph &g, int s)
 }
 
 /* 
- * Single source shortest path in directed acyclie graphs (DAG)
+ * Single source shortest path in directed acycline graphs (DAG)
  */
 // Relaxing arcs in the order sorted by the topological sort technology
 // It can only be used in DAG
 int sp_topsort(graph &g, int s)
 {	
 	int	*p;
-	if (topsort(g, &p) == -1) {
+	if (topsort(g, p) == -1) {
 		cerr << "It's not a DGA!!!" << endl;
 		return -1;
 	}
@@ -603,7 +670,7 @@ int sp_topsort(graph &g, int s)
 static int find(graph &g, int s)
 {
 	int	x;
-	
+
 	for (x = s; g.vextices[x].parent >= 0; x = g.vextices[x].parent)
 		;
 	while (x != s) {
@@ -656,7 +723,7 @@ void _sort(arc_node	**parc, int n)
 		}
 }
 /* Return the weight of the MST */
-int kruscal(graph &g) 
+int mst_kruscal(graph &g) 
 {
 	int	weight = 0;
 	if (g.kind != UDN && g.kind != UDG) {
@@ -679,18 +746,18 @@ int kruscal(graph &g)
 	for (int i = 0; i < g.vex_num; i ++) {
 		arc_node	*tmp = g.vextices[i].first_arc;
 		while (tmp) {	// Attention: UDN
-				arc_node	*p = g.vextices[tmp -> adj_vex].first_arc;
-				while (p) {
-					if (p -> adj_vex == i)
-						break;
-					p = p -> next_arc;
-				}	// 找出该边对应的另一边
-				if (p -> status == WHT) {	// 该边还没入选，选进并置status为BLK
-					parc[cnt ++] = tmp;
-					tmp -> add = i;
-					tmp -> status = BLK;
-				}
-				tmp = tmp -> next_arc;
+			arc_node	*p = g.vextices[tmp -> adj_vex].first_arc;
+			while (p) {
+				if (p -> adj_vex == i)
+					break;
+				p = p -> next_arc;
+			}	// 找出该边对应的另一边
+			if (p -> status == WHT) {	// 该边还没入选，选进并置status为BLK
+				parc[cnt ++] = tmp;
+				tmp -> add = i;
+				tmp -> status = BLK;
+			}
+			tmp = tmp -> next_arc;
 		}
 	}
 
@@ -700,13 +767,13 @@ int kruscal(graph &g)
 	// sort the arcs with the non-reduced order
 	//	qsort(parc, g.arc_num, sizeof(arc_node *), cmp);
 	_sort(parc, g.arc_num);
-	
+
 	// Add arcs in weight order which connect two trees,
 	// and union the two trees
 	for(int j = 0; j < g.arc_num; j ++) {
 		int p1 = find(g, parc[j] -> adj_vex);
 		int	p2 = find(g, parc[j] -> add);	// The information of the other vertex
-	// Union the two trees
+		// Union the two trees
 		if (p1 != p2) {
 			cnt ++;
 			parc[j] -> status = BLK;
@@ -716,8 +783,11 @@ int kruscal(graph &g)
 			break;
 	}
 	for (int i = 0; i < g.arc_num; i ++) {
-		if (parc[i] -> status == BLK)
-			printf("%d %d w = %d\n", parc[i] -> adj_vex, parc[i] -> add, parc[i] -> w);
+		if (parc[i] -> status == BLK) {
+			PRT(g.vextices[parc[i] -> adj_vex].info);
+			PRT(g.vextices[parc[i] -> add].info);
+			printf("w = %d\n", parc[i] -> w);
+		}
 	}
 }
 
@@ -779,37 +849,38 @@ static void prim_relax(graph &g, int s, int u, int w)
 	}
 }
 /*
-void prim_show(graph &g)
-{
-	for (int i = 0; i < g.vex_num; i ++)
-		printf("%d\n", g.vextices[i].status);
-	for (int i = 0; i < g.vex_num; i ++) {
-		if (g.vextices[i].status == BLK) {
-			cout << i << " " << g.vextices[i].parent 
-				 << " w = " << g.vextices[i].dis << endl;
-			if (g.vextices[g.vextices[i].parent].parent == i)
-				g.vextices[g.vextices[i].parent].status = WHT;
-		}
-	}
-	for (int i = 0; i < g.vex_num; i ++)
-		printf("after %d\n", g.vextices[i].status);
-}
-*/
+   void prim_show(graph &g)
+   {
+   for (int i = 0; i < g.vex_num; i ++)
+   printf("%d\n", g.vextices[i].status);
+   for (int i = 0; i < g.vex_num; i ++) {
+   if (g.vextices[i].status == BLK) {
+   cout << i << " " << g.vextices[i].parent 
+   << " w = " << g.vextices[i].dis << endl;
+   if (g.vextices[g.vextices[i].parent].parent == i)
+   g.vextices[g.vextices[i].parent].status = WHT;
+   }
+   }
+   for (int i = 0; i < g.vex_num; i ++)
+   printf("after %d\n", g.vextices[i].status);
+   }
+   */
 // I'm too lazy to cope with this problem,
 // so I use "grobal var" to solve it!!!
 // God Bless me!!!
 int	_node1[MAX];
 int	_node2[MAX];
 int	_w[MAX];
-void prim_show(graph &g) 
+void mst_show(graph &g) 
 {
 	for (int i = 0; i < g.vex_num - 1; i ++) {
-	cout << _node1[i] << " " << _node2[i] 
-		 << " w = " << _w[i] << endl;
+		PRT(g.vextices[_node1[i]].info);
+		PRT(g.vextices[_node2[i]].info);
+		cout << " w = " << _w[i] << endl;
 	}
 }
 
-int prim(graph &g, int s)
+int mst_prim(graph &g, int s)
 {
 	prim_init(g, s);
 	int weight = 0;		// The weight of the MST

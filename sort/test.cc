@@ -1,45 +1,39 @@
-#include "sort.h"
+/*************************************************************************
+	> File Name: test.cc
+	> Author: Weiang
+	> Mail: weiang@mail.ustc.edu.cn 
+	> Created Time: 2012年12月03日 星期一 00时33分18秒
+    > Describition: 
+ ************************************************************************/
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include "item.h"
+#include "array.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
+#include "sort.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
 	if (argc != 3) {
-		cerr << "Usage: " << argv[0] << " sorted_num choice(0, 1)" << endl;
+		cerr << "Usage: " << argv[0] << " <sorted number> <choice(0, 1)>" << endl;
 		return -1;
 	}
 
-	int	n = atoi(argv[1]);
-	int	sw = atoi(argv[2]);
-	
-	int i;
-	int	*a = new int[n];
-	int *b = new int[n];
-	if (sw)
-		for (i = 0; i < n; i ++)
-			a[i] = 1000 * (1.0 * rand() / RAND_MAX);
-	else {
-		for (i = 0; i < n; i ++) {
-			cin >> a[i];
-		}
-	}
-	
-	cp(b, a, n);
-	insert_sort(b, 0, n - 1);
-	print(b, n - 1);
-	cp(b, a, n);
-	select_sort(b, 0, n - 1);
-	print(b, n - 1);
-	cp(b, a, n);
-	bubble_sort(b, 0, n - 1);
-	print(b, n - 1);
-	cp(b, a, n);
-	shell_sort(b, 0, n - 1);
-	print(b, n - 1);
+	int n, choice;
+	n = atoi(argv[1]);
+	choice = atoi(argv[2]);
+
+	item	*a = new item[n];
+	if (choice == 0)
+		rand_init(a, n);
+	else 
+		scan_init(a, n);
+	select_sort(a, 0, n - 1);
+	show(a, 0, n - 1);
 	return 0;
 }
-
-

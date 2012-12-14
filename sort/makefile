@@ -1,10 +1,15 @@
-a.out: sort.o test.o sort.h
-	g++ -g sort.o test.o
-#a.out: sort.o sort.h
-#	g++ -g sort.o
-sort.o: sort.cc sort.h
-	g++ -c sort.cc
-test.o: test.cc sort.cc sort.h
-	g++ -c test.cc
-clean:
-	rm *.o
+OBJ = array.o item.o test.o sort.o
+HEAD = array.h item.h sort.h
+
+a.out: $(OBJ) $(HEAD)
+	g++ -g $(OBJ)
+array.o: $(HEAD) array.cc
+	g++ -g -c array.cc
+item.o: item.h item.cc
+	g++ -g -c item.cc
+test.o: $(HEAD) test.cc
+	g++ -g -c test.cc
+sort.o: sort.h sort.cc
+	g++ -g -c sort.cc
+clean:	
+	rm $(OBJ)
